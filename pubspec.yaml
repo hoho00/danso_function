@@ -1,7 +1,7 @@
 name: danso_function
-description: A new Flutter package project.
+description: This is a package for danso-flutter-application
 version: 0.0.1
-homepage:
+homepage: https://github.com/hoho00/danso_function
 
 environment:
   sdk: ">=2.7.0 <3.0.0"

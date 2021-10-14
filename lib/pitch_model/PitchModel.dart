@@ -1,9 +1,20 @@
-enum Yulmyeong { joong, yim, moo, whang, tae }
+import 'dart:collection';
+import '../common/pitch_const/PitchConst.dart';
+
+enum Yulmyeong { joong, yim, moo, hwang, tae }
 
 class PitchModel {
-  double _frequency;
-  Yulmyeong _yulmyeong;
+  Map<String, int> _yulmyeongFrequency;
+  double _standardFrequency = F_SHARP_FREQ;
+  double _userAdjustedPitchFrequency = 0;
+  int _scaleStatus = 0;
 
-  double get frequency => _frequency;
-  Yulmyeong get yulmyeong => _yulmyeong;
+  PitchModel(double ) {
+    _yulmyeongFrequency ={
+      'joong': ,
+      'yim' : ,
+      'moo' : ,
+      'hwang' : , 
+    };
+  }
 }
