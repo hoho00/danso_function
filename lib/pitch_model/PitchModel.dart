@@ -101,7 +101,7 @@ class PitchModel implements PitchModelInterface {
       Yulmyeong.hyup: double.parse(hyup.toStringAsFixed(2)),
       Yulmyeong.joong: double.parse(joong.toStringAsFixed(2)),
       Yulmyeong.yim: double.parse(yim.toStringAsFixed(2)),
-      Yulmyeong.nam: double.parse(nam.toStringAsFixed(2)),
+      //Yulmyeong.nam: double.parse(nam.toStringAsFixed(2)),
       Yulmyeong.moo: double.parse(moo.toStringAsFixed(2)),
       Yulmyeong.hwang: double.parse(hwang.toStringAsFixed(2)),
       Yulmyeong.tae: double.parse(tae.toStringAsFixed(2))
