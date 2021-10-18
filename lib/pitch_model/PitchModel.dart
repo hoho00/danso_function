@@ -1,5 +1,5 @@
 import 'dart:collection';
-import '../common/pitch_const/PitchConst.dart';
+import 'package:danso_function/danso_function.dart';
 
 class PitchModel {
   Map<Yulmyeong, double> _yulmyeongFrequency;
@@ -12,7 +12,7 @@ class PitchModel {
     _yulmyeongFrequency = calculateYulmyeong(adjustFrequency);
   }
 
-  Yulmyeong getYulmyeongByFrequency(double userFrequency) {
+  YulmyeongNote getYulmyeongByFrequency(double userFrequency) {
     Yulmyeong resultYulmyeong;
     ScaleStatus resultScaleStatus;
     _yulmyeongFrequency.forEach((yulmyeong, frequency) {
@@ -29,7 +29,7 @@ class PitchModel {
         resultScaleStatus = ScaleStatus.high;
       }
     });
-    return resultYulmyeong;
+    return new YulmyeongNote(resultYulmyeong, resultScaleStatus);
   }
 
   double getFrequencyByYulmyeong(Yulmyeong yulmyeong, ScaleStatus scaleStatus) {
@@ -48,6 +48,11 @@ class PitchModel {
     return resultYulmyeong;
   }
 
+  double getFrequencyByOutputPitch(YulmyeongNote outPutPitch) {
+    return getFrequencyByYulmyeong(
+        outPutPitch.yulmyeong, outPutPitch.scaleStatus);
+  }
+
   //List[0] = low, List[1] = high
   List getFrequencyRangeByYulmyeong(
       Yulmyeong yulmyeong, ScaleStatus scaleStatus) {
@@ -58,10 +63,15 @@ class PitchModel {
     return correctRange;
   }
 
-  bool isCorrectPitch(
-      Yulmyeong yulmyeong, double userFrequency, ScaleStatus scaleStatus) {
-    // Map<Yulmyeong, ScaleStatus> decision =
-    //     getYulmyeongByFrequency(userFrequency);
+  List getFrequencyRangeByOutputPitch(YulmyeongNote outPutPitch) {
+    return getFrequencyRangeByYulmyeong(
+        outPutPitch.yulmyeong, outPutPitch.scaleStatus);
+  }
+
+  bool isCorrectPitch(double userFrequency, YulmyeongNote detectPitch) {
+    List correctRange = getFrequencyRangeByOutputPitch(detectPitch);
+    return (correctRange[0] <= userFrequency &&
+        userFrequency <= correctRange[1]);
   }
 
   Map<Yulmyeong, double> calculateYulmyeong(double standardFrequency) {

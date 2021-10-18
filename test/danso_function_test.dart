@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:pitchdetector/pitchdetector.dart';
 import 'package:test/test.dart';
 import 'package:danso_function/danso_function.dart';
 
@@ -110,18 +111,40 @@ void main() {
   test('Pitch Model getYulmyeongByFrequency tae', () {
     PitchModel pitchModel = new PitchModel();
     expect(
-        Yulmyeong.tae, pitchModel.getYulmyeongByFrequency(STANDARD_PITCH + 10));
+        pitchModel.getYulmyeongByFrequency(STANDARD_PITCH + 10) ==
+            YulmyeongNote(Yulmyeong.tae, ScaleStatus.origin),
+        true);
   });
 
   test('Pitch Model getYulmyeongByFrequency hyup', () {
     PitchModel pitchModel = new PitchModel();
     expect(
-        pitchModel.getYulmyeongByFrequency(STANDARD_PITCH + 30), Yulmyeong.hyup);
+        pitchModel.getYulmyeongByFrequency(STANDARD_PITCH + 30) ==
+            YulmyeongNote(Yulmyeong.hyup, ScaleStatus.high),
+        true);
   });
 
   test('Pitch Model getYulmyeongByFrequency tae high', () {
     PitchModel pitchModel = new PitchModel();
     expect(
-        pitchModel.getYulmyeongByFrequency(1479.98 + 11), Yulmyeong.tae);
+        pitchModel.getYulmyeongByFrequency(1479.98 + 11) ==
+            YulmyeongNote(Yulmyeong.tae, ScaleStatus.high),
+        true);
+  });
+
+  test('Pitch Model isCorrectPitch', () {
+    PitchModel pitchModel = new PitchModel();
+    expect(
+        pitchModel.isCorrectPitch(
+            STANDARD_PITCH, YulmyeongNote(Yulmyeong.tae, ScaleStatus.origin)),
+        true);
+  });
+
+  test('Pitch Model isCorrectPitch', () {
+    PitchModel pitchModel = new PitchModel();
+    expect(
+        pitchModel.isCorrectPitch(
+            STANDARD_PITCH, YulmyeongNote(Yulmyeong.tae, ScaleStatus.high)),
+        false);
   });
 }
