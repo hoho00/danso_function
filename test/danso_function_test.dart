@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:danso_function/interface/pitch_model_interface/PitchModelInterface.dart';
+import 'package:flutter/foundation.dart';
 import 'package:pitchdetector/pitchdetector.dart';
 import 'package:test/test.dart';
 import 'package:danso_function/danso_function.dart';
@@ -146,5 +148,19 @@ void main() {
         pitchModel.isCorrectPitch(
             STANDARD_PITCH, YulmyeongNote(Yulmyeong.tae, ScaleStatus.high)),
         false);
+  });
+
+  test('Singleton test', () {
+    PitchModelInterface pitchModel = new PitchModel();
+    PitchModelInterface pitchModel2 = new PitchModel();
+
+    //PitchModel pitchModel3 = new PitchModel();
+    pitchModel.settingAdjust(760.11);
+
+    expect(
+        pitchModel2.isCorrectPitch(
+            760.11, new YulmyeongNote(Yulmyeong.tae, ScaleStatus.origin)),
+        true);
+
   });
 }

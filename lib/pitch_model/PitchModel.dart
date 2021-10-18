@@ -1,17 +1,24 @@
 import 'dart:collection';
 import 'package:danso_function/danso_function.dart';
+import 'package:danso_function/interface/pitch_model_interface/PitchModelInterface.dart';
 
-class PitchModel {
+class PitchModel implements PitchModelInterface {
   Map<Yulmyeong, double> _yulmyeongFrequency;
   double _standardFrequency = STANDARD_PITCH;
   double _userAdjustedPitchFrequency = 0;
   double _correctRange = STANDARD_CORRECT_RANGE;
+  static final PitchModel _instance = PitchModel._internal();
 
-  PitchModel() {
+  factory PitchModel() {
+    return _instance;
+  }
+
+  PitchModel._internal() {
     double adjustFrequency = _standardFrequency + _userAdjustedPitchFrequency;
     _yulmyeongFrequency = calculateYulmyeong(adjustFrequency);
   }
 
+  @override
   YulmyeongNote getYulmyeongByFrequency(double userFrequency) {
     Yulmyeong resultYulmyeong;
     ScaleStatus resultScaleStatus;
@@ -32,6 +39,25 @@ class PitchModel {
     return new YulmyeongNote(resultYulmyeong, resultScaleStatus);
   }
 
+  @override
+  void settingAdjust(double userInputFrequency) {
+    _userAdjustedPitchFrequency = _standardFrequency - userInputFrequency;
+    _yulmyeongFrequency = calculateYulmyeong(userInputFrequency);
+  }
+
+  @override
+  bool isCorrectPitch(double userFrequency, YulmyeongNote detectPitch) {
+    List correctRange = getFrequencyRangeByOutputPitch(detectPitch);
+    return (correctRange[0] <= userFrequency &&
+        userFrequency <= correctRange[1]);
+  }
+
+  @override
+  double getFrequencyByYulmyeongNote(YulmyeongNote outPutPitch) {
+    return getFrequencyByYulmyeong(
+        outPutPitch.yulmyeong, outPutPitch.scaleStatus);
+  }
+
   double getFrequencyByYulmyeong(Yulmyeong yulmyeong, ScaleStatus scaleStatus) {
     double resultYulmyeong = 0.0;
     switch (scaleStatus) {
@@ -48,11 +74,6 @@ class PitchModel {
     return resultYulmyeong;
   }
 
-  double getFrequencyByOutputPitch(YulmyeongNote outPutPitch) {
-    return getFrequencyByYulmyeong(
-        outPutPitch.yulmyeong, outPutPitch.scaleStatus);
-  }
-
   //List[0] = low, List[1] = high
   List getFrequencyRangeByYulmyeong(
       Yulmyeong yulmyeong, ScaleStatus scaleStatus) {
@@ -66,12 +87,6 @@ class PitchModel {
   List getFrequencyRangeByOutputPitch(YulmyeongNote outPutPitch) {
     return getFrequencyRangeByYulmyeong(
         outPutPitch.yulmyeong, outPutPitch.scaleStatus);
-  }
-
-  bool isCorrectPitch(double userFrequency, YulmyeongNote detectPitch) {
-    List correctRange = getFrequencyRangeByOutputPitch(detectPitch);
-    return (correctRange[0] <= userFrequency &&
-        userFrequency <= correctRange[1]);
   }
 
   Map<Yulmyeong, double> calculateYulmyeong(double standardFrequency) {
