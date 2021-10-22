@@ -8,6 +8,7 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
+  dart_midi: ^1.0.1
   flutter:
     sdk: flutter
   # test: ^1.15.7
@@ -20,7 +21,6 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-  dart_midi: any
   # pitch_detector_dart: any
   tekartik_midi:
     git:
