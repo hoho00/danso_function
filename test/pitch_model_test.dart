@@ -16,7 +16,7 @@ void main() {
     PitchModel pitchModel = new PitchModel();
     var hyup =
         pitchModel.getFrequencyByYulmyeong(Yulmyeong.hyup, ScaleStatus.origin);
-    expect(hyup, 392.00);
+    expect(hyup, 370.00);
   });
 
   test('Pitch Model getFrequencyByYulmyeong joong', () {
@@ -24,14 +24,14 @@ void main() {
 
     var joong =
         pitchModel.getFrequencyByYulmyeong(Yulmyeong.joong, ScaleStatus.origin);
-    expect(joong, 440.00);
+    expect(joong, 415.31);
   });
 
   test('Pitch Model getFrequencyByYulmyeong yim', () {
     PitchModel pitchModel = new PitchModel();
     var yim =
         pitchModel.getFrequencyByYulmyeong(Yulmyeong.yim, ScaleStatus.origin);
-    expect(yim, 493.88);
+    expect(yim, 466.17);
   });
 
   test('Pitch Model getFrequencyByYulmyeong nam', () {
