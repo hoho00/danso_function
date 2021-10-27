@@ -10,9 +10,10 @@ const double LAMBDA_MULTIFLIER_WHOLETONE =
 const double LAMBDA_MULTIFLIER_SEMITONE = 0.9438743126816892778461134;
 //const LAMBDA_MULTIFLIER_CUBIC = 0.855261504650115966796875;
 
-const STANDARD_PITCH = F_SHARP_FREQ;
+const STANDARD_PITCH = F_FREQ;
 const STANDARD_CORRECT_RANGE = 20.0;
 const SCALEUP_CONSTANT = 2;
 
-enum Yulmyeong { hyup, joong, yim, nam, moo, hwang, tae }
+enum Yulmyeong { hyup, joong, yim, nam, moo, hwang, tae, rest, long}
 enum ScaleStatus { origin, high }
+enum JangDan {semachi, joongJoongMori, jajinMori, huiMori, goodGeori}
