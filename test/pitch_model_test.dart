@@ -34,38 +34,39 @@ void main() {
     expect(yim, 466.17);
   });
 
-  test('Pitch Model getFrequencyByYulmyeong nam', () {
-    PitchModel pitchModel = new PitchModel();
-    var nam =
-        pitchModel.getFrequencyByYulmyeong(Yulmyeong.nam, ScaleStatus.origin);
-    expect(nam, 554.37);
-  });
+  // Yulmyeong "nam" is deprecated
+  // test('Pitch Model getFrequencyByYulmyeong nam', () {
+  //   PitchModel pitchModel = new PitchModel();
+  //   var nam =
+  //       pitchModel.getFrequencyByYulmyeong(Yulmyeong.nam, ScaleStatus.origin);
+  //   expect(nam, 554.37);
+  // });
 
   test('Pitch Model getFrequencyByYulmyeong moo', () {
     PitchModel pitchModel = new PitchModel();
     var moo =
         pitchModel.getFrequencyByYulmyeong(Yulmyeong.moo, ScaleStatus.origin);
-    expect(moo, 587.33);
+    expect(moo, 554.37);
   });
   test('Pitch Model getFrequencyByYulmyeong hwang', () {
     PitchModel pitchModel = new PitchModel();
     var hwang =
         pitchModel.getFrequencyByYulmyeong(Yulmyeong.hwang, ScaleStatus.origin);
-    expect(hwang, 659.26);
+    expect(hwang, 622.26);
   });
 
   test('Pitch Model getFrequencyByYulmyeong tae', () {
     PitchModel pitchModel = new PitchModel();
     var tae =
         pitchModel.getFrequencyByYulmyeong(Yulmyeong.tae, ScaleStatus.origin);
-    expect(tae, 739.99);
+    expect(tae, 698.46);
   });
 
   test('Pitch Model getFrequencyByYulmyeong hyup high', () {
     PitchModel pitchModel = new PitchModel();
     var hyup =
         pitchModel.getFrequencyByYulmyeong(Yulmyeong.hyup, ScaleStatus.high);
-    expect(hyup, 784.00);
+    expect(hyup, 740.0);
   });
 
   test('Pitch Model getFrequencyByYulmyeong joong high', () {
@@ -73,41 +74,42 @@ void main() {
 
     var joong =
         pitchModel.getFrequencyByYulmyeong(Yulmyeong.joong, ScaleStatus.high);
-    expect(joong, 880.00);
+    expect(joong, 830.62);
   });
 
   test('Pitch Model getFrequencyByYulmyeong yim high', () {
     PitchModel pitchModel = new PitchModel();
     var yim =
         pitchModel.getFrequencyByYulmyeong(Yulmyeong.yim, ScaleStatus.high);
-    expect(yim, 987.76);
+    expect(yim, 932.34);
   });
 
-  test('Pitch Model getFrequencyByYulmyeong nam high', () {
-    PitchModel pitchModel = new PitchModel();
-    var nam =
-        pitchModel.getFrequencyByYulmyeong(Yulmyeong.nam, ScaleStatus.high);
-    expect(nam, 1108.74);
-  });
+  // Yulmyeong nam is deprecated
+  // test('Pitch Model getFrequencyByYulmyeong nam high', () {
+  //   PitchModel pitchModel = new PitchModel();
+  //   var nam =
+  //       pitchModel.getFrequencyByYulmyeong(Yulmyeong.nam, ScaleStatus.high);
+  //   expect(nam, 1108.74);
+  // });
 
   test('Pitch Model getFrequencyByYulmyeong moo high', () {
     PitchModel pitchModel = new PitchModel();
     var moo =
         pitchModel.getFrequencyByYulmyeong(Yulmyeong.moo, ScaleStatus.high);
-    expect(moo, 1174.66);
+    expect(moo, 1108.74);
   });
   test('Pitch Model getFrequencyByYulmyeong hwang high', () {
     PitchModel pitchModel = new PitchModel();
     var hwang =
         pitchModel.getFrequencyByYulmyeong(Yulmyeong.hwang, ScaleStatus.high);
-    expect(hwang, 1318.52);
+    expect(hwang, 1244.52);
   });
 
   test('Pitch Model getFrequencyByYulmyeong tae high', () {
     PitchModel pitchModel = new PitchModel();
     var tae =
         pitchModel.getFrequencyByYulmyeong(Yulmyeong.tae, ScaleStatus.high);
-    expect(tae, 1479.98);
+    expect(tae, 1396.92);
   });
 
   test('Pitch Model getYulmyeongByFrequency tae', () {
@@ -129,7 +131,7 @@ void main() {
   test('Pitch Model getYulmyeongByFrequency tae high', () {
     PitchModel pitchModel = new PitchModel();
     expect(
-        pitchModel.getYulmyeongByFrequency(1479.98 + 11) ==
+        pitchModel.getYulmyeongByFrequency(STANDARD_PITCH * 2 + 11) ==
             YulmyeongNote(Yulmyeong.tae, ScaleStatus.high),
         true);
   });
@@ -155,12 +157,23 @@ void main() {
     PitchModelInterface pitchModel2 = new PitchModel();
 
     //PitchModel pitchModel3 = new PitchModel();
-    pitchModel.settingAdjust(760.11);
+    pitchModel.settingAdjust(F_SHARP_FREQ + 10.11);
 
     expect(
         pitchModel2.isCorrectPitch(
-            760.11, new YulmyeongNote(Yulmyeong.tae, ScaleStatus.origin)),
+            F_SHARP_FREQ, new YulmyeongNote(Yulmyeong.tae, ScaleStatus.origin)),
         true);
+  });
 
+  test('Chinese Character Transformation Test', () {
+    expect(
+        YulmyeongNote(Yulmyeong.joong, ScaleStatus.origin).toChineseCharacter(),
+        "仲");
+  });
+
+  test('Hanguel Character Transformation Test', () {
+    expect(
+        YulmyeongNote(Yulmyeong.joong, ScaleStatus.origin).toHangeul(),
+        "중");
   });
 }

@@ -1,40 +1,7 @@
 import 'dart:io';
 import 'package:test/test.dart';
-import 'package:path_provider/path_provider.dart';
-
-class CounterStorage {
-  Future<String> get _localPath async {
-    final directory = await getApplicationDocumentsDirectory();
-
-    return directory.path;
-  }
-
-  Future<File> get _localFile async {
-    final path = await _localPath;
-    return File('./counter.txt');
-  }
-
-  Future<int> readCounter() async {
-    try {
-      final file = await _localFile;
-
-      // 파일 읽기
-      String contents = await file.readAsString();
-
-      return int.parse(contents);
-    } catch (e) {
-      // 에러가 발생할 경우 0을 반환
-      return 0;
-    }
-  }
-
-  Future<File> writeCounter(int counter) async {
-    final file = await _localFile;
-
-    // 파일 쓰기
-    return file.writeAsString('$counter');
-  }
-}
+import 'dart:async';
+import 'dart:convert';
 
 void main() {
   // test('parser and writer output matches', () {
@@ -57,8 +24,14 @@ void main() {
   //   expect(originalFileBuffer, writtenBuffer);
   // });
 
-  test('read from csv file and ', () {
-    var file = File("assets/arirang.csv");
-    
-  });
+  // test('read from csv file', () async {
+  //   var file = await File("assets/arirang.txt").readAsString();
+  //   print(file);
+  //   //print(file[0]);
+  //   // for (var i = 0; i < file.length; i++) {
+  //   //   print(file[i]);
+  //   // }
+  //   //print(file);
+  //   //expect(true, true);
+  // });
 }

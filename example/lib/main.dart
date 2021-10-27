@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -5,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:pitchdetector/pitchdetector.dart';
 import 'package:danso_function/danso_function.dart';
 import 'package:enum_to_string/enum_to_string.dart';
+import 'package:dart_midi/dart_midi.dart';
 
 void main() {
   runApp(MyApp());
@@ -26,10 +29,15 @@ class _MyAppState extends State<MyApp> {
   String yulmyeong;
   String pitchStatus;
   double userInputForAdjust = F_FREQ;
+  
+  var parser = MidiParser();
   @override
   void initState() {
     super.initState();
+    var file = File("sources/arirang.mid");
     detector = new Pitchdetector(sampleRate: 44100, sampleSize: 4096);
+    MidiFile parsedMidi = parser.parseMidiFromFile(file);
+    print(parsedMidi.tracks.length.toString());
     isRecording = isRecording;
     detector.onRecorderStateChanged.listen((event) {
       setState(() {
