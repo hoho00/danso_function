@@ -52,5 +52,5 @@ jobs:
         run: fvm flutter pub publish --dry-run
 
       - name: Publish new version
-        run: fvm flutter pub publsih
+        run: fvm flutter pub
       
