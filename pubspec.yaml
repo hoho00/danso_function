@@ -1,6 +1,6 @@
 name: danso_function
 description: This is a package for danso-flutter-application
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/hoho00/danso_function
 
 environment:
@@ -8,8 +8,10 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
+  csv: ^4.1.0
   flutter:
     sdk: flutter
+  path_provider: ^1.6.28
   # test: ^1.15.7
 
 dev_dependencies:
@@ -20,12 +22,7 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-  dart_midi: any
   # pitch_detector_dart: any
-  tekartik_midi:
-    git:
-      url: git://github.com/tekartik/midi.dart
-      ref: dart2
   pitchdetector: ^0.0.3+6
   test: ^1.15.7
 
