@@ -8,3 +8,6 @@
 * PitchModelInterface for danso yulmyeong
 * Made as Singleton.
 * It maps user input frequencies to danso yulmyeong
+
+## 0.0.3
+* Made toChineseCharacter and toHangeul in YulmyeongNote class
