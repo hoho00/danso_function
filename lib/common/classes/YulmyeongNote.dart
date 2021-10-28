@@ -1,7 +1,5 @@
 import 'package:danso_function/danso_function.dart';
 
-import '../pitch_const/PitchConst.dart';
-
 class YulmyeongNote {
   Yulmyeong _yulmyeong;
   ScaleStatus _scaleStatus;

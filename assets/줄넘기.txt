@@ -1,0 +1,5 @@
+t/m/h/o|mh/tm/h/o|mh/tm/h/o|mh/tm/h/o|
+mh/tm/h/o|t/m/h/o|J/^/J/^|J/^/J/J|
+mh/tt/tt/h|tt/J/tt/h|t/tt/tt/h|tt/J/tt/h|
+t/tt/tt/h|tt/J/tt/h|mh/tt/tt/h|tt/J/tt/h|
+mh/tm/h/o|mh/tt/tt/th|th/mh/t/^|o/o/o/o|
