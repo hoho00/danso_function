@@ -1,4 +1,4 @@
-Release v0.0.2
+Release v0.0.4
 
 ## Features
 
