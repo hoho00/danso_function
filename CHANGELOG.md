@@ -1,5 +1,4 @@
 ## 0.0.1
-
 * Initial release
 * Sorry for users, this might be a package for private application. So you might not as well use this package. Thanks!
 
@@ -11,3 +10,8 @@
 
 ## 0.0.3
 * Made toChineseCharacter and toHangeul in YulmyeongNote class
+
+
+## 0.0.4
+* Completed JungGanBoClass
+* Passed all the Test about JungGanBoClass
