@@ -14,5 +14,5 @@ const STANDARD_PITCH = F_FREQ;
 const STANDARD_CORRECT_RANGE = 20.0;
 const SCALEUP_CONSTANT = 2;
 
-enum Yulmyeong { hyup, joong, yim, nam, moo, hwang, tae, rest, long}
+enum Yulmyeong { hyup, joong, yim, nam, moo, hwang, tae, rest, long, blank}
 enum ScaleStatus { origin, high }

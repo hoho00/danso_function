@@ -1,4 +1,4 @@
-import 'dart:ffi';
+import 'dart:io';
 
 import 'package:danso_function/danso_function.dart';
 
@@ -10,7 +10,7 @@ import 'package:danso_function/danso_function.dart';
 // 강 : 오선보의 한마디에 해당하는 것을 ‘강’ 이라 한다.
 // 정 : 오선보의 한 박에 해당하는 것을 ‘정’ 이라 한다.
 
-class JungGanBo implements JungGanBoInterface{
+class JungGanBo implements JungGanBoInterface {
   String _title;
   JangDan _jangDan;
   List<Jung> _sheet;
@@ -20,4 +20,14 @@ class JungGanBo implements JungGanBoInterface{
   List<Jung> get sheet => _sheet;
   //todo
   //make method
+  Future<JungGanBo> getJungGanBoSheetFromTextFile(String path) async {
+    //print("getgetJungGanBoSheetFromTextFile : ");
+    var list = await File(path).readAsLines();
+    for (var gang in list) {
+      // while(true) {
+
+      // }
+    }
+    return JungGanBo();
+  }
 }

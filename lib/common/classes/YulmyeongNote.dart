@@ -1,12 +1,15 @@
 import 'package:danso_function/danso_function.dart';
 
 class YulmyeongNote {
-  Yulmyeong _yulmyeong;
-  ScaleStatus _scaleStatus;
+  Yulmyeong _yulmyeong = Yulmyeong.joong;
+  ScaleStatus _scaleStatus = ScaleStatus.origin;
 
   YulmyeongNote(y, s) {
     _yulmyeong = y;
     _scaleStatus = s;
+  }
+  YulmyeongNote getInstance() {
+    return YulmyeongNote(_yulmyeong, _scaleStatus);
   }
 
   Yulmyeong get yulmyeong {
@@ -55,6 +58,9 @@ class YulmyeongNote {
         case Yulmyeong.long:
           res = "-";
           break;
+        case Yulmyeong.blank:
+          res = " ";
+          break;
         default:
       }
     }
@@ -87,6 +93,9 @@ class YulmyeongNote {
           break;
         case Yulmyeong.long:
           res = "-";
+          break;
+        case Yulmyeong.blank:
+          res = " ";
           break;
         default:
       }
@@ -126,6 +135,9 @@ class YulmyeongNote {
         case Yulmyeong.long:
           res = "-";
           break;
+        case Yulmyeong.blank:
+          res = " ";
+          break;
         default:
       }
     }
@@ -158,6 +170,9 @@ class YulmyeongNote {
           break;
         case Yulmyeong.long:
           res = "-";
+          break;
+        case Yulmyeong.blank:
+          res = " ";
           break;
         default:
       }
