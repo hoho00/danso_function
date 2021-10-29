@@ -1,4 +1,4 @@
-enum JangDanType { semachi, joongJoongMori, jajinMori, huiMori, goodGeori }
+enum JangDanType { semachi, joongJoongMori, jajinMori, huiMori, goodGeori, fourByFour }
 enum DivisionStatus { one, two, three }
 
 const double FAST_TEMPO = 120;

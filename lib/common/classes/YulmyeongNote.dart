@@ -22,8 +22,8 @@ class YulmyeongNote {
 
   @override
   bool operator ==(covariant YulmyeongNote other) {
-    return (this._yulmyeong == other._yulmyeong &&
-        this._scaleStatus == other._scaleStatus);
+    return (this._yulmyeong == other.yulmyeong &&
+        this._scaleStatus == other.scaleStatus);
   }
 
   String toChineseCharacter() {
