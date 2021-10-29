@@ -19,7 +19,7 @@ void main() {
 
   test('generateJungGanBoSheetFromTextFile test', () async {
     JungGanBoInterface testJungGanBo = JungGanBo();
-    var t = await testJungGanBo.getJungGanBoSheetFromTextFile("assets/남생이.txt");
+    var t = await testJungGanBo.getJungGanBoSheetFromTextFile("assets/hi.txt");
     //print(t);
     expect(true, true);
   });
