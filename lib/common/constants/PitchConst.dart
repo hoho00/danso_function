@@ -1,7 +1,7 @@
 //To change Client's requirement
 
 import 'dart:ffi';
-import '../output_pitch_model/OutputPitchModel.dart';
+import '../classes/YulmyeongNote.dart';
 
 const F_FREQ = 698.46;
 const F_SHARP_FREQ = 739.99;
@@ -14,6 +14,5 @@ const STANDARD_PITCH = F_FREQ;
 const STANDARD_CORRECT_RANGE = 20.0;
 const SCALEUP_CONSTANT = 2;
 
-enum Yulmyeong { hyup, joong, yim, nam, moo, hwang, tae, rest, long}
+enum Yulmyeong { hyup, joong, yim, nam, moo, hwang, tae, rest, long, blank}
 enum ScaleStatus { origin, high }
-enum JangDan {semachi, joongJoongMori, jajinMori, huiMori, goodGeori}
