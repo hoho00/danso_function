@@ -1,8 +1,0 @@
-t/t/o|Y/Y/o|Y/Y/o|Y/M/o|
-Y/Y/o|Y/M/o|Y/Y/J|t/t/o|
-Y/H/o|H/H/M|M/Y/o|Y/M/o|
-M/Y/o|Y/M/o|Y/Y/J|t/t/o|
-Y/H/o|H/H/M|M/Y/o|Y/M/o|
-M/Y/o|Y/M/o|Y/Y/J|t/t/o|
-t/t/o|Y/Y/o|Y/Y/o|Y/J/o|
-Y/Y/o|Y/M/o|Y/Y/J|t/t/o|

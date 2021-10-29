@@ -1,4 +1,0 @@
-t/o/t|Y/o/Y|Y/o/Y|Y/M/o|
-M/M/o|t/o/t|Y/o/Y|Y/p/^|
-t/o/t|Y/o/Y|Y/o/Y|Y/M/o|
-M/M/o|t/o/t|Y/o/Y|Y/o/^|
