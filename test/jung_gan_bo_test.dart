@@ -16,7 +16,7 @@ void main() {
 
   test('generateJungGanBoSheetFromFormatString test', () async {
     JungGanBo testJungGanBo = new JungGanBo("도라지타령", "세마치장단",
-        "ht/t/t|t/h/mh|J/o/YJ|t/--h/m|ht-/t/t|h-t/h-m/yj-|y/mhm/ymy|j/o/^|ht/t/t|t/--h/mh|J/o/YJ|t/--h/m|ht-/t/t|h-t/h-m/yj-|y/mhm/ymy|j/o/^|y-j/y-m/yj|y-j/y-m/yj/m/m/h|m/--h/mh|ht/t/t|t/h/mh|J/o/YJ|t/--h/m|ht-/t/t|h-t/h-m/yj-|y/mhm/ymy|j/o/^|");
+        "ht|t|t#t|h|mh#J|o|YJ#t|--h|m#ht-|t|t#h-t|h-m|yj-#y|mhm|ymy#j|o|^#ht|t|t#t|--h|mh#J|o|YJ#t|--h|m#ht-|t|t#h-t|h-m|yj-#y|mhm|ymy#j|o|^#y-j|y-m|yj#y-j|y-m|yj|m|m|h#m|--h|mh#ht|t|t#t|h|mh#J|o|YJ#t|--h|m#ht-|t|t#h-t|h-m|yj-#y|mhm|ymy#j|o|^#");
     //testJungGanBo.setJungGanBoSheetFromFormatString("ht/t/t|t/h/mh|J/o/YJ|t/--h/m|ht-/t/t|h-t/h-m/yj-|y/mhm/ymy|j/o/^|ht/t/t|t/--h/mh|J/o/YJ|t/--h/m|ht-/t/t|h-t/h-m/yj-|y/mhm/ymy|j/o/^|y-j/y-m/yj|y-j/y-m/yj/m/m/h|m/--h/mh|ht/t/t|t/h/mh|J/o/YJ|t/--h/m|ht-/t/t|h-t/h-m/yj-|y/mhm/ymy|j/o/^|");
     //print(t);
     //print(testJungGanBo);
@@ -33,7 +33,7 @@ void main() {
   });
 
   JungGanBo testJungGanBo =
-      new JungGanBo("title", "세마치장단", "jym/htJ/YMH|T^-/joo/jo-|");
+      new JungGanBo("title", "세마치장단", "jym|htJ|YMH#T^-|joo|jo-#");
 
   List<YulmyeongNote> actual = [
     YulmyeongNote(Yulmyeong.joong, ScaleStatus.origin),
