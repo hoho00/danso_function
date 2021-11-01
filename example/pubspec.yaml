@@ -36,6 +36,8 @@ dependencies:
   pitchdetector: ^0.0.3+6
   enum_to_string: ^1.0.14
   dart_midi: ^1.0.1
+  just_audio: ^0.6.15
+  flutter_midi: ^1.0.2
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -67,8 +69,9 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - sources/
-    - sources/arirang.mid
+    - assets/
+    - assets/arirang128k.ogg
+    - assets/danso_arirang_mixed.mp3
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

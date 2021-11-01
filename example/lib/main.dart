@@ -8,6 +8,8 @@ import 'package:pitchdetector/pitchdetector.dart';
 import 'package:danso_function/danso_function.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:dart_midi/dart_midi.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:flutter_midi/flutter_midi.dart';
 
 void main() {
   runApp(MyApp());
@@ -29,15 +31,18 @@ class _MyAppState extends State<MyApp> {
   String yulmyeong;
   String pitchStatus;
   double userInputForAdjust = F_FREQ;
-  
+  final _player = AudioPlayer();
+  final _flutterMidi = FlutterMidi();
+  String _value = 'assets/Dan.sf2';
+  Timer _timer;
+
   var parser = MidiParser();
   @override
   void initState() {
+    load(_value);
     super.initState();
-    var file = File("sources/arirang.mid");
+
     detector = new Pitchdetector(sampleRate: 44100, sampleSize: 4096);
-    MidiFile parsedMidi = parser.parseMidiFromFile(file);
-    print(parsedMidi.tracks.length.toString());
     isRecording = isRecording;
     detector.onRecorderStateChanged.listen((event) {
       setState(() {
@@ -54,6 +59,25 @@ class _MyAppState extends State<MyApp> {
         userInputForAdjust = event["pitch"];
       });
     });
+  }
+
+  @override
+  void dispose() {
+    _player.dispose();
+    super.dispose();
+  }
+
+  void load(String asset) async {
+    print('Loading File...');
+    _flutterMidi.unmute();
+    ByteData _byte = await rootBundle.load(asset);
+    //assets/sf2/SmallTimGM6mb.sf2
+    //assets/sf2/Piano.SF2
+    _flutterMidi.prepare(sf2: _byte, name: "hi");
+  }
+
+  void _play(int midi) {
+    _flutterMidi.playMidiNote(midi: midi);
   }
 
   @override
@@ -87,6 +111,75 @@ class _MyAppState extends State<MyApp> {
                 child: isAdjust
                     ? Text("Prees me to stop adjusting")
                     : Text("Press me to adjust")),
+            ElevatedButton(
+              onPressed: () async {
+                // TODO: cow button
+                await _player.setAsset('assets/arirang128k.ogg');
+                _player.setSpeed(0.8);
+                _player.play();
+              },
+              child: Text('Cow'),
+            ),
+            SizedBox(width: 10),
+            ElevatedButton(
+              onPressed: () {
+                _player.stop();
+                // TODO: horse button
+              },
+              child: Text('Horse'),
+            ),
+            SizedBox(width: 10),
+            ElevatedButton(
+              onPressed: () {
+                _play(65);
+                _timer = Timer(new Duration(milliseconds: 2000), () {
+                  _flutterMidi.stopMidiNote(midi: 65);
+                });
+              },
+              child: Text('tae'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _play(63);
+                _timer = Timer(new Duration(microseconds: 1333333), () {
+                  _flutterMidi.stopMidiNote(midi: 63);
+                });
+              },
+              child: Text('hwang'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _play(61);
+                _timer = Timer(new Duration(milliseconds: 500), () {
+                  _flutterMidi.stopMidiNote(midi: 61);
+                });
+              },
+              child: Text('moo'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _play(58);
+                _timer = Timer(new Duration(milliseconds: 500), () {
+                  _flutterMidi.stopMidiNote(midi: 58);
+                });
+              },
+              child: Text('yim'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _play(56);
+                _timer = Timer(new Duration(milliseconds: 500), () {
+                  _flutterMidi.stopMidiNote(midi: 56);
+                });
+              },
+              child: Text('joong'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                playJungGanBo();
+              },
+              child: Text('play'),
+            ),
           ],
         )),
       ),
@@ -125,5 +218,17 @@ class _MyAppState extends State<MyApp> {
       isAdjust = false;
     });
     pitchModelInterface.settingAdjust(userInputForAdjust);
+  }
+
+  void playJungGanBo() async {
+    JungGanBo testJungGanBo = new JungGanBo("도라지타령", "세마치장단",
+        "ht|t|t#t|h|mh#J|o|YJ#t|--h|m#ht-|t|t#h-t|h-m|yj-#y|mhm|ymy#j|o|^#ht|t|t#t|--h|mh#J|o|YJ#t|--h|m#ht-|t|t#h-t|h-m|yj-#y|mhm|ymy#j|o|^#y-j|y-m|yj#y-j|y-m|yj|m|m|h#m|--h|mh#ht|t|t#t|h|mh#J|o|YJ#t|--h|m#ht-|t|t#h-t|h-m|yj-#y|mhm|ymy#j|o|^#");
+
+    testJungGanBo.sheet[0].yulmyeongs[0];
+    for (var i = 0; i < testJungGanBo.sheet.length; i++) {
+      for (var j = 0; j < testJungGanBo.sheet[i].yulmyeongs.length; j++) {
+        print(testJungGanBo.sheet[i].yulmyeongs[j].toHangeul());
+      }
+    }
   }
 }
