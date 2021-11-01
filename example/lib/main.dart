@@ -227,6 +227,7 @@ class _MyAppState extends State<MyApp> {
     testJungGanBo.sheet[0].yulmyeongs[0];
     for (var i = 0; i < testJungGanBo.sheet.length; i++) {
       for (var j = 0; j < testJungGanBo.sheet[i].yulmyeongs.length; j++) {
+        // To do what you can do with YulmyeonNote
         print(testJungGanBo.sheet[i].yulmyeongs[j].toHangeul());
       }
     }

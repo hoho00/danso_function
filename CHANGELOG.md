@@ -15,3 +15,6 @@
 ## 0.0.4
 * Completed JungGanBoClass
 * Passed all the Test about JungGanBoClass
+
+## 0.0.5
+* Hot Fix!! Need to change jung gan bo string structure and Accept it!
