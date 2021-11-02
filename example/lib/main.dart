@@ -37,6 +37,8 @@ class _MyAppState extends State<MyApp> {
   Timer _timer;
 
   var parser = MidiParser();
+  JungGanBo testJungGanBo = new JungGanBo("도라지타령", "세마치장단",
+      "h|m|y#j|y|m#h|t|J#Y|o|^#h|t|J#Y|J|t#h|m|y#j|o|^#j|y|m#h|t|^#J|Y|J#t|h|^#j|j|y#y|m|m#h|t|J#Y|o|^#");
   @override
   void initState() {
     load(_value);
@@ -167,16 +169,18 @@ class _MyAppState extends State<MyApp> {
             ),
             ElevatedButton(
               onPressed: () {
-                _play(56);
+                _play(0);
                 _timer = Timer(new Duration(milliseconds: 500), () {
-                  _flutterMidi.stopMidiNote(midi: 56);
+                  _flutterMidi.stopMidiNote(midi: 0);
                 });
               },
               child: Text('joong'),
             ),
             ElevatedButton(
               onPressed: () {
-                playJungGanBo();
+                playJungGanBo(testJungGanBo);
+                //playJung(testJungGanBo.sheet[0]);
+                //playOneYulmyeongNote(YulmyeongNote(Yulmyeong.joong, ScaleStatus.origin), 3000);
               },
               child: Text('play'),
             ),
@@ -220,16 +224,16 @@ class _MyAppState extends State<MyApp> {
     pitchModelInterface.settingAdjust(userInputForAdjust);
   }
 
-  void playJungGanBo() async {
-    JungGanBo testJungGanBo = new JungGanBo("도라지타령", "세마치장단",
-        "ht|t|t#t|h|mh#J|o|YJ#t|--h|m#ht-|t|t#h-t|h-m|yj-#y|mhm|ymy#j|o|^#ht|t|t#t|--h|mh#J|o|YJ#t|--h|m#ht-|t|t#h-t|h-m|yj-#y|mhm|ymy#j|o|^#y-j|y-m|yj#y-j|y-m|yj|m|m|h#m|--h|mh#ht|t|t#t|h|mh#J|o|YJ#t|--h|m#ht-|t|t#h-t|h-m|yj-#y|mhm|ymy#j|o|^#");
+  // void playJungGanBo() async {
+  //   JungGanBo testJungGanBo = new JungGanBo("도라지타령", "세마치장단",
+  //       "ht|t|t#t|h|mh#J|o|YJ#t|--h|m#ht-|t|t#h-t|h-m|yj-#y|mhm|ymy#j|o|^#ht|t|t#t|--h|mh#J|o|YJ#t|--h|m#ht-|t|t#h-t|h-m|yj-#y|mhm|ymy#j|o|^#y-j|y-m|yj#y-j|y-m|yj|m|m|h#m|--h|mh#ht|t|t#t|h|mh#J|o|YJ#t|--h|m#ht-|t|t#h-t|h-m|yj-#y|mhm|ymy#j|o|^#");
 
-    testJungGanBo.sheet[0].yulmyeongs[0];
-    for (var i = 0; i < testJungGanBo.sheet.length; i++) {
-      for (var j = 0; j < testJungGanBo.sheet[i].yulmyeongs.length; j++) {
-        // To do what you can do with YulmyeonNote
-        print(testJungGanBo.sheet[i].yulmyeongs[j].toHangeul());
-      }
-    }
-  }
+  //   testJungGanBo.sheet[0].yulmyeongs[0];
+  //   for (var i = 0; i < testJungGanBo.sheet.length; i++) {
+  //     for (var j = 0; j < testJungGanBo.sheet[i].yulmyeongs.length; j++) {
+  //       // To do what you can do with YulmyeonNote
+  //       print(testJungGanBo.sheet[i].yulmyeongs[j].toHangeul());
+  //     }
+  //   }
+  // }
 }

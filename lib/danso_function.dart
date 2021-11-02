@@ -14,3 +14,5 @@ export './interface/jung_gan_bo_interface/JungGanBoInterface.dart';
 export './model/jung-gan-bo_model/Jung.dart';
 export './model/jung-gan-bo_model/JungGanBo.dart';
 export './model/pitch_model/PitchModel.dart';
+
+export './common/functions/JungGanBoPlayer.dart';
