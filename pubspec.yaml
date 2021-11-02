@@ -1,6 +1,6 @@
 name: danso_function
 description: This is a package for danso-flutter-application
-version: 0.0.3
+version: 0.0.5
 homepage: https://github.com/hoho00/danso_function
 
 environment:
@@ -23,6 +23,9 @@ dev_dependencies:
   # pitch_detector_dart: any
   pitchdetector: ^0.0.3+6
   test: ^1.15.7
+  dart_midi: ^1.0.1
+  just_audio: ^0.6.15
+  flutter_midi: ^1.0.2
 
 # The following section is specific to Flutter.
 flutter:

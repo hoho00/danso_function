@@ -28,10 +28,12 @@ class JungGanBo implements JungGanBoInterface {
   void setJungGanBoSheetFromFormatString(String formatString) {
     String tmp = "";
     for (var i = 0; i < formatString.length; i++) {
-      if (formatString[i] == "/") {
+      if (formatString[i] == "|") {
+        print(tmp);
         _sheet.add(new Jung(tmp));
         tmp = "";
-      } else if (formatString[i] == "|") {
+      } else if (formatString[i] == "#") {
+        print(tmp);
         _sheet.add(new Jung(tmp));
         tmp = "";
       } else {
