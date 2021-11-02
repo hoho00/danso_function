@@ -23,6 +23,10 @@
 
 ## 0.0.5
 * Hot Fix!! Need to change jung gan bo string structure and Accept it!
+
+## 0.0.6
+* Made playJungGanBo(JungGanBo jungGanBo) function!!
+* But Need to adjust
 ```
 <br>
 
