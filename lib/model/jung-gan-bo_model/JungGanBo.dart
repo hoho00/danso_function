@@ -27,7 +27,7 @@ class JungGanBo implements JungGanBoInterface {
                 print(tmp);
                 _sheet.add(new Jung(tmp));
                 tmp = "";
-            } else if (formatString[i] == "#") {
+            } else if (formatString[i] == '#') {
                 print(tmp);
                 _sheet.add(new Jung(tmp));
                 tmp = "";

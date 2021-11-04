@@ -5,14 +5,10 @@ import 'dart:async';
 
 void playJungGanBo(JungGanBo jungGanBo) {
     int i = 1;
-    //jungGanBo.jangDan
-    var prev = playJung(
-        jungGanBo.sheet[0],
-        YulmyeongNote(Yulmyeong.start, ScaleStatus.origin)
-    );
-    interval(new Duration(milliseconds : 900), (timer) {
+    playJung(jungGanBo.sheet[0]);
+    interval(new Duration(milliseconds : FAST_TEMPO_SEC), (timer) {
         if(i < jungGanBo.sheet.length) {
-            prev = playJung(jungGanBo.sheet[i], prev);
+            playJung(jungGanBo.sheet[i]);
             i++;
         } else {
             timer.cancel();
@@ -21,49 +17,62 @@ void playJungGanBo(JungGanBo jungGanBo) {
     });
 }
 
-YulmyeongNote playJung(Jung jung, YulmyeongNote prev) {
-    if (jung.yulmyeongs[0].yulmyeong == Yulmyeong.long) {} else {
-        if (jung.divisionStatus == DivisionStatus.one) {
-            playOneYulmyeongNote(jung.yulmyeongs[0], 900);
-            return jung.yulmyeongs[0];
-        } else if (jung.divisionStatus == DivisionStatus.two) {
-            playOneYulmyeongNote(jung.yulmyeongs[0], 450);
-            int i = 1;
-            interval(new Duration(milliseconds : 450), (timer) {
-                if(i < 2) {
-                    playOneYulmyeongNote(jung.yulmyeongs[i], 450);
-                    i++;
-                } else {
-                    timer.cancel();
-                    return jung.yulmyeongs[1];
+playJung(Jung jung) {
+    if (jung.divisionStatus == DivisionStatus.one) {
+        if (jung.yulmyeongs[0].yulmyeong != Yulmyeong.long && jung.yulmyeongs[0].yulmyeong != Yulmyeong.blank) {
+            allMidiStop();
+        }
+        playOneYulmyeongNote(jung.yulmyeongs[0]);
+        return jung.yulmyeongs[0];
+    } else if (jung.divisionStatus == DivisionStatus.two) {
+        if (jung.yulmyeongs[0].yulmyeong != Yulmyeong.long && jung.yulmyeongs[0].yulmyeong != Yulmyeong.blank) {
+            allMidiStop();
+        }
+        playOneYulmyeongNote(jung.yulmyeongs[0]);
+        int i = 1;
+        interval(
+            new Duration(milliseconds : FAST_TEMPO_SEC ~/2), (timer) {
+            if(i < 2) {
+                if (jung.yulmyeongs[i].yulmyeong != Yulmyeong.long  && jung.yulmyeongs[0].yulmyeong != Yulmyeong.blank) {
+                    allMidiStop();
                 }
-            });
-            return jung.yulmyeongs[1];
-        } else if (jung.divisionStatus == DivisionStatus.three) {
-            playOneYulmyeongNote(jung.yulmyeongs[0], 300);
-            int i = 1;
-            interval(new Duration(milliseconds : 300), (timer) {
+                playOneYulmyeongNote(jung.yulmyeongs[i]);
+                i++;
+            } else {
+                timer.cancel();
+                return jung.yulmyeongs[1];
+            }
+        });
+        return jung.yulmyeongs[1];
+    } else if (jung.divisionStatus == DivisionStatus.three) {
+        if (jung.yulmyeongs[0].yulmyeong != Yulmyeong.long  && jung.yulmyeongs[0].yulmyeong != Yulmyeong.blank) {
+            allMidiStop();
+        }
+        playOneYulmyeongNote(jung.yulmyeongs[0]);
+        int i = 1;
+        interval(new Duration(milliseconds : FAST_TEMPO_SEC ~/3),
+            (timer) {
                 if(i < 3) {
-                    playOneYulmyeongNote(jung.yulmyeongs[i], 300);
+                    if (jung.yulmyeongs[i].yulmyeong != Yulmyeong.long && jung.yulmyeongs[0].yulmyeong != Yulmyeong.blank) {
+                        allMidiStop();
+                    }
+                    playOneYulmyeongNote(jung.yulmyeongs[i]);
                     i++;
                 } else {
                     timer.cancel();
                     return jung.yulmyeongs[2];
                 }
-            });
-            return jung.yulmyeongs[2];
-        }
+            }
+        );
+        return jung.yulmyeongs[2];
     }
 
 }
 
-playOneYulmyeongNote(YulmyeongNote yulmyeongNote, int millisec) {
+playOneYulmyeongNote(YulmyeongNote yulmyeongNote) {
     final player = FlutterMidi();
     int notePlayed = getMidiNoteFromYulmyeongNote(yulmyeongNote);
     player.playMidiNote(midi : notePlayed);
-    Timer(new Duration(milliseconds : millisec - 10), () {
-        player.stopMidiNote(midi : notePlayed);
-    });
 }
 
 YulmyeongNote playOneYulmyeonNoteWithPrev(
@@ -73,14 +82,17 @@ YulmyeongNote playOneYulmyeonNoteWithPrev(
 ) {
     final player = FlutterMidi();
     int notePlayed = getMidiNoteFromYulmyeongNote(yulmyeongNote);
-    int prevPlayed = getMidiNoteFromYulmyeongNote(prevYulmyeongNote);
     if (yulmyeongNote.yulmyeong != Yulmyeong.long) {
-        Timer(new Duration(milliseconds : millisec - 10), () {
-            player.stopMidiNote(midi : prevPlayed);
-        });
+        allMidiStop();
     }
     player.playMidiNote(midi : notePlayed);
     return yulmyeongNote;
+}
+
+playOneYulmyeongNoteNonStop(YulmyeongNote yulmyeongNote) {
+    final player = FlutterMidi();
+    int notePlayed = getMidiNoteFromYulmyeongNote(yulmyeongNote);
+    player.playMidiNote(midi : notePlayed);
 }
 
 int getMidiNoteFromYulmyeongNote(YulmyeongNote yulmyeongNote) {
@@ -108,7 +120,7 @@ int getMidiNoteFromYulmyeongNote(YulmyeongNote yulmyeongNote) {
             case Yulmyeong.rest:
                 res = REST_NOTE;
                 break;
-            default ://high:
+            default: //high:
         }
     } else {
         switch (yulmyeongNote.yulmyeong) {
@@ -142,11 +154,22 @@ int getMidiNoteFromYulmyeongNote(YulmyeongNote yulmyeongNote) {
 Timer interval(Duration duration, func) {
     Timer function () {
         Timer timer = new Timer(duration, function);
-
         func(timer);
-
         return timer;
     }
-
     return new Timer(duration, function);
+}
+
+allMidiStop() {
+    final stopPlayer = FlutterMidi();
+    for (var i = 50; i < 128; i++) {
+        stopPlayer.stopMidiNote(midi : i);
+    }
+}
+
+endMidi() {
+    final stopPlayer = FlutterMidi();
+    for (var i = 0; i < 128; i++) {
+        stopPlayer.stopMidiNote(midi : i);
+    }
 }
