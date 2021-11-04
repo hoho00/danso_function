@@ -4,7 +4,7 @@ import 'package:flutter_midi/flutter_midi.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
 
-void playJungGanBo(JungGanBo jungGanBo) {
+playJungGanBo(JungGanBo jungGanBo) {
     int i = 1;
     String soundFontPath = "assests/Dan.sf2";
     load(soundFontPath, FlutterMidi());
@@ -72,7 +72,7 @@ playJung(Jung jung, int milliSecondInOneJung) {
 
 }
 
-playOneYulmyeongNoteInMilliSecond(
+playOneYulmyeongNoteDuringDurationTime(
     YulmyeongNote yulmyeongNote,
     int durationTime
 ) {

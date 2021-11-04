@@ -1,13 +1,9 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'dart:async';
-
 import 'package:flutter/services.dart';
 import 'package:pitchdetector/pitchdetector.dart';
 import 'package:danso_function/danso_function.dart';
 import 'package:enum_to_string/enum_to_string.dart';
-import 'package:dart_midi/dart_midi.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:flutter_midi/flutter_midi.dart';
 
@@ -32,19 +28,17 @@ class _MyAppState extends State<MyApp> {
     double userInputForAdjust = F_FREQ;
     final _player = AudioPlayer();
     final _flutterMidi = FlutterMidi();
-    String _value = 'assets/Dan.sf2';
     Timer _timer;
 
-    var parser = MidiParser();
     JungGanBo testJungGanBo = new JungGanBo(
-        "도라지타령",
+        "늴리리야",
         "세마치장단",
-        "Y|Y|Y#J|o|o#Y|M|Y#J|o|Y-J#t|t|--t#t-J|t-h|m#h-t|h-m|y#j|o|^#m|o|o#j|m|t-h#m|h-m|y#j|o|^#Y|Y|Y#J|o|o#Y|M|Y#J|o|Y-J#t|t|--t#t-J|t-h|m#h-t|h-m|y#j|o|^#m|o|o#j|m|t-h#m|h-m|y#j|o|^#"
+        "Y|Y|Y#J|o|o#Y|M|Y#J|o|Y-J#t|t|--t#t-J|t-h|m#h-t|h-m|y#j|o|^#m|o|o#j|m|t-h#m|h-" +
+                "m|y#j|o|^#Y|Y|Y#J|o|o#Y|M|Y#J|o|Y-J#t|t|--t#t-J|t-h|m#h-t|h-m|y#j|o|^#m|o|o#j|" +
+                "m|t-h#m|h-m|y#j|o|^#"
     );
     @override void initState() {
-        //load(_value);
         super.initState();
-
         detector = new Pitchdetector(sampleRate : 44100, sampleSize : 4096);
         isRecording = isRecording;
         detector
@@ -136,34 +130,34 @@ class _MyAppState extends State<MyApp> {
                             }, child : Text('Horse'),),
                             SizedBox(width : 10),
                             ElevatedButton(onPressed : () {
-                                _play(65);
-                                _timer = Timer(new Duration(milliseconds : 2000), () {
-                                    _flutterMidi.stopMidiNote(midi : 65);
-                                });
+                                playOneYulmyeongNoteDuringDurationTime(
+                                    YulmyeongNote(Yulmyeong.tae, ScaleStatus.origin),
+                                    FAST_TEMPO_SEC
+                                );
                             }, child : Text('tae'),),
                             ElevatedButton(onPressed : () {
-                                _play(63);
-                                _timer = Timer(new Duration(microseconds : 1333333), () {
-                                    _flutterMidi.stopMidiNote(midi : 63);
-                                });
+                                playOneYulmyeongNoteDuringDurationTime(
+                                    YulmyeongNote(Yulmyeong.hwang, ScaleStatus.origin),
+                                    MEDIUM_TEMPO_SEC
+                                );
                             }, child : Text('hwang'),),
                             ElevatedButton(onPressed : () {
-                                _play(61);
-                                _timer = Timer(new Duration(milliseconds : 500), () {
-                                    _flutterMidi.stopMidiNote(midi : 61);
-                                });
+                                playOneYulmyeongNoteDuringDurationTime(
+                                    YulmyeongNote(Yulmyeong.moo, ScaleStatus.origin),
+                                    SLOW_TEMPO_SEC
+                                );
                             }, child : Text('moo'),),
                             ElevatedButton(onPressed : () {
-                                _play(58);
-                                _timer = Timer(new Duration(milliseconds : 500), () {
-                                    _flutterMidi.stopMidiNote(midi : 58);
-                                });
+                                playOneYulmyeongNoteDuringDurationTime(
+                                    YulmyeongNote(Yulmyeong.yim, ScaleStatus.origin),
+                                    SLOW_TEMPO_SEC
+                                );
                             }, child : Text('yim'),),
                             ElevatedButton(onPressed : () {
-                                _play(0);
-                                _timer = Timer(new Duration(milliseconds : 500), () {
-                                    _flutterMidi.stopMidiNote(midi : 0);
-                                });
+                                playOneYulmyeongNoteDuringDurationTime(
+                                    YulmyeongNote(Yulmyeong.joong, ScaleStatus.origin),
+                                    SLOW_TEMPO_SEC
+                                );
                             }, child : Text('joong'),),
                             ElevatedButton(onPressed : () {
                                 playJungGanBo(testJungGanBo);
@@ -209,12 +203,5 @@ class _MyAppState extends State<MyApp> {
                 isAdjust = false;
             });
             pitchModelInterface.settingAdjust(userInputForAdjust);
-        }
-
-        void stopJungGanBo() {
-          for (var i = 0; i < 256; i++) {
-            final player = FlutterMidi();
-            player.stopMidiNote(midi: i);
-          }
         }
     }
