@@ -33,7 +33,7 @@ playJung(Jung jung) {
         interval(
             new Duration(milliseconds : FAST_TEMPO_SEC ~/2), (timer) {
             if(i < 2) {
-                if (jung.yulmyeongs[i].yulmyeong != Yulmyeong.long  && jung.yulmyeongs[0].yulmyeong != Yulmyeong.blank) {
+                if (jung.yulmyeongs[i].yulmyeong != Yulmyeong.long  && jung.yulmyeongs[i].yulmyeong != Yulmyeong.blank) {
                     allMidiStop();
                 }
                 playOneYulmyeongNote(jung.yulmyeongs[i]);
@@ -53,7 +53,7 @@ playJung(Jung jung) {
         interval(new Duration(milliseconds : FAST_TEMPO_SEC ~/3),
             (timer) {
                 if(i < 3) {
-                    if (jung.yulmyeongs[i].yulmyeong != Yulmyeong.long && jung.yulmyeongs[0].yulmyeong != Yulmyeong.blank) {
+                    if (jung.yulmyeongs[i].yulmyeong != Yulmyeong.long && jung.yulmyeongs[i].yulmyeong != Yulmyeong.blank) {
                         allMidiStop();
                     }
                     playOneYulmyeongNote(jung.yulmyeongs[i]);
@@ -70,26 +70,6 @@ playJung(Jung jung) {
 }
 
 playOneYulmyeongNote(YulmyeongNote yulmyeongNote) {
-    final player = FlutterMidi();
-    int notePlayed = getMidiNoteFromYulmyeongNote(yulmyeongNote);
-    player.playMidiNote(midi : notePlayed);
-}
-
-YulmyeongNote playOneYulmyeonNoteWithPrev(
-    YulmyeongNote yulmyeongNote,
-    int millisec,
-    YulmyeongNote prevYulmyeongNote
-) {
-    final player = FlutterMidi();
-    int notePlayed = getMidiNoteFromYulmyeongNote(yulmyeongNote);
-    if (yulmyeongNote.yulmyeong != Yulmyeong.long) {
-        allMidiStop();
-    }
-    player.playMidiNote(midi : notePlayed);
-    return yulmyeongNote;
-}
-
-playOneYulmyeongNoteNonStop(YulmyeongNote yulmyeongNote) {
     final player = FlutterMidi();
     int notePlayed = getMidiNoteFromYulmyeongNote(yulmyeongNote);
     player.playMidiNote(midi : notePlayed);
