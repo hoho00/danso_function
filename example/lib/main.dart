@@ -69,17 +69,6 @@ class _MyAppState extends State<MyApp> {
         super.dispose();
     }
 
-    void load(String asset)async {
-        print('Loading File...');
-        _flutterMidi.unmute();
-        ByteData _byte = await rootBundle.load(asset);
-        _flutterMidi.prepare(sf2 : _byte, name : "hi");
-    }
-
-    void _play(int midi) {
-        _flutterMidi.playMidiNote(midi : midi);
-    }
-
     @override Widget build(BuildContext context) {
         return MaterialApp(
                 home : Scaffold(
@@ -118,7 +107,6 @@ class _MyAppState extends State<MyApp> {
                                     : Text("Press me to adjust")
                             ),
                             ElevatedButton(onPressed : ()async {
-                                // TODO: cow button
                                 await _player.setAsset('assets/arirang128k.ogg');
                                 _player.setSpeed(0.8);
                                 _player.play();
@@ -126,7 +114,6 @@ class _MyAppState extends State<MyApp> {
                             SizedBox(width : 10),
                             ElevatedButton(onPressed : () {
                                 _player.stop();
-                                // TODO: horse button
                             }, child : Text('Horse'),),
                             SizedBox(width : 10),
                             ElevatedButton(onPressed : () {
@@ -160,7 +147,7 @@ class _MyAppState extends State<MyApp> {
                                 );
                             }, child : Text('joong'),),
                             ElevatedButton(onPressed : () {
-                                playJungGanBo(testJungGanBo);
+                                playJungGanBo(testJungGanBo, _flutterMidi);
                             }, child : Text('play'),),
                             ElevatedButton(onPressed : () {
                                 endMidi();
