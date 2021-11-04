@@ -1,10 +1,13 @@
 import 'package:danso_function/common/constants/MidiNoteConst.dart';
 import 'package:danso_function/danso_function.dart';
 import 'package:flutter_midi/flutter_midi.dart';
+import 'package:flutter/services.dart'; 
 import 'dart:async';
 
 void playJungGanBo(JungGanBo jungGanBo) {
     int i = 1;
+    String soundFontPath = "assests/Dan.sf2";
+    load(soundFontPath, FlutterMidi());
     playJung(jungGanBo.sheet[0]);
     interval(new Duration(milliseconds : FAST_TEMPO_SEC), (timer) {
         if(i < jungGanBo.sheet.length) {
@@ -152,4 +155,11 @@ endMidi() {
     for (var i = 0; i < 128; i++) {
         stopPlayer.stopMidiNote(midi : i);
     }
+}
+
+load(String asset, FlutterMidi flutterMidi) async {
+    print( 'Loading File...');
+    flutterMidi.unmute();
+    ByteData _byte = await rootBundle.load(asset);
+    flutterMidi.prepare(sf2 : _byte, name :  "hi");
 }
