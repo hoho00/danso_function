@@ -1,17 +1,18 @@
 import 'package:danso_function/common/constants/MidiNoteConst.dart';
 import 'package:danso_function/danso_function.dart';
 import 'package:flutter_midi/flutter_midi.dart';
-import 'package:flutter/services.dart'; 
+import 'package:flutter/services.dart';
 import 'dart:async';
 
 void playJungGanBo(JungGanBo jungGanBo) {
     int i = 1;
     String soundFontPath = "assests/Dan.sf2";
     load(soundFontPath, FlutterMidi());
-    playJung(jungGanBo.sheet[0]);
-    interval(new Duration(milliseconds : FAST_TEMPO_SEC), (timer) {
+    int milliSecondInOneJung = jungGanBo.jangDan.milliSecond;
+    playJung(jungGanBo.sheet[0], milliSecondInOneJung);
+    interval(new Duration(milliseconds : milliSecondInOneJung), (timer) {
         if(i < jungGanBo.sheet.length) {
-            playJung(jungGanBo.sheet[i]);
+            playJung(jungGanBo.sheet[i], milliSecondInOneJung);
             i++;
         } else {
             timer.cancel();
@@ -20,7 +21,9 @@ void playJungGanBo(JungGanBo jungGanBo) {
     });
 }
 
-playJung(Jung jung) {
+playJung(Jung jung, int milliSecondInOneJung) {
+    int halfOfJung = milliSecondInOneJung ~/ 2;
+  int threePiecesOfJung = milliSecondInOneJung ~/3;
     if (jung.divisionStatus == DivisionStatus.one) {
         if (jung.yulmyeongs[0].yulmyeong != Yulmyeong.long && jung.yulmyeongs[0].yulmyeong != Yulmyeong.blank) {
             allMidiStop();
@@ -33,10 +36,9 @@ playJung(Jung jung) {
         }
         playOneYulmyeongNote(jung.yulmyeongs[0]);
         int i = 1;
-        interval(
-            new Duration(milliseconds : FAST_TEMPO_SEC ~/2), (timer) {
+        interval(new Duration(milliseconds : halfOfJung), (timer) {
             if(i < 2) {
-                if (jung.yulmyeongs[i].yulmyeong != Yulmyeong.long  && jung.yulmyeongs[i].yulmyeong != Yulmyeong.blank) {
+                if (jung.yulmyeongs[i].yulmyeong != Yulmyeong.long && jung.yulmyeongs[i].yulmyeong != Yulmyeong.blank) {
                     allMidiStop();
                 }
                 playOneYulmyeongNote(jung.yulmyeongs[i]);
@@ -48,28 +50,39 @@ playJung(Jung jung) {
         });
         return jung.yulmyeongs[1];
     } else if (jung.divisionStatus == DivisionStatus.three) {
-        if (jung.yulmyeongs[0].yulmyeong != Yulmyeong.long  && jung.yulmyeongs[0].yulmyeong != Yulmyeong.blank) {
+        if (jung.yulmyeongs[0].yulmyeong != Yulmyeong.long && jung.yulmyeongs[0].yulmyeong != Yulmyeong.blank) {
             allMidiStop();
         }
         playOneYulmyeongNote(jung.yulmyeongs[0]);
         int i = 1;
-        interval(new Duration(milliseconds : FAST_TEMPO_SEC ~/3),
-            (timer) {
-                if(i < 3) {
-                    if (jung.yulmyeongs[i].yulmyeong != Yulmyeong.long && jung.yulmyeongs[i].yulmyeong != Yulmyeong.blank) {
-                        allMidiStop();
-                    }
-                    playOneYulmyeongNote(jung.yulmyeongs[i]);
-                    i++;
-                } else {
-                    timer.cancel();
-                    return jung.yulmyeongs[2];
+        interval(new Duration(milliseconds : threePiecesOfJung), (timer) {
+            if(i < 3) {
+                if (jung.yulmyeongs[i].yulmyeong != Yulmyeong.long && jung.yulmyeongs[i].yulmyeong != Yulmyeong.blank) {
+                    allMidiStop();
                 }
+                playOneYulmyeongNote(jung.yulmyeongs[i]);
+                i++;
+            } else {
+                timer.cancel();
+                return jung.yulmyeongs[2];
             }
-        );
+        });
         return jung.yulmyeongs[2];
     }
 
+}
+
+playOneYulmyeongNoteInMilliSecond(
+    YulmyeongNote yulmyeongNote,
+    int durationTime
+) {
+    final player = FlutterMidi();
+    int notePlayed = getMidiNoteFromYulmyeongNote(yulmyeongNote);
+    player.playMidiNote(midi : notePlayed);
+
+    Timer(new Duration(milliseconds : durationTime), () {
+        player.stopMidiNote(midi : notePlayed);
+    });
 }
 
 playOneYulmyeongNote(YulmyeongNote yulmyeongNote) {
@@ -157,9 +170,9 @@ endMidi() {
     }
 }
 
-load(String asset, FlutterMidi flutterMidi) async {
-    print( 'Loading File...');
+load(String asset, FlutterMidi flutterMidi)async {
+    print('Loading File...');
     flutterMidi.unmute();
     ByteData _byte = await rootBundle.load(asset);
-    flutterMidi.prepare(sf2 : _byte, name :  "hi");
+    flutterMidi.prepare(sf2 : _byte, name : "hi");
 }
