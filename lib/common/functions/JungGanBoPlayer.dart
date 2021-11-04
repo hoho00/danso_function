@@ -6,8 +6,6 @@ import 'dart:async';
 
 void playJungGanBo(JungGanBo jungGanBo) {
     int i = 1;
-    String soundFontPath = "assests/Dan.sf2";
-    load(soundFontPath, FlutterMidi());
     playJung(jungGanBo.sheet[0], jungGanBo.jangDan.milliSecond);
     interval(new Duration(milliseconds : jungGanBo.jangDan.milliSecond), (timer) {
         if(i < jungGanBo.sheet.length) {
