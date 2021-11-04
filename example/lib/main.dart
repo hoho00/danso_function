@@ -42,7 +42,7 @@ class _MyAppState extends State<MyApp> {
         "Y|Y|Y#J|o|o#Y|M|Y#J|o|Y-J#t|t|--t#t-J|t-h|m#h-t|h-m|y#j|o|^#m|o|o#j|m|t-h#m|h-m|y#j|o|^#Y|Y|Y#J|o|o#Y|M|Y#J|o|Y-J#t|t|--t#t-J|t-h|m#h-t|h-m|y#j|o|^#m|o|o#j|m|t-h#m|h-m|y#j|o|^#"
     );
     @override void initState() {
-        load(_value);
+        //load(_value);
         super.initState();
 
         detector = new Pitchdetector(sampleRate : 44100, sampleSize : 4096);
@@ -79,7 +79,6 @@ class _MyAppState extends State<MyApp> {
         print('Loading File...');
         _flutterMidi.unmute();
         ByteData _byte = await rootBundle.load(asset);
-        //assets/sf2/SmallTimGM6mb.sf2 assets/sf2/Piano.SF2
         _flutterMidi.prepare(sf2 : _byte, name : "hi");
     }
 
@@ -168,16 +167,9 @@ class _MyAppState extends State<MyApp> {
                             }, child : Text('joong'),),
                             ElevatedButton(onPressed : () {
                                 playJungGanBo(testJungGanBo);
-                                // playJung(testJungGanBo.sheet[0]);
-                                // playOneYulmyeongNote(YulmyeongNote(Yulmyeong.joong, ScaleStatus.origin),
-                                // 3000);
                             }, child : Text('play'),),
                             ElevatedButton(onPressed : () {
                                 endMidi();
-                                //playJungGanBo(testJungGanBo);
-                                // playJung(testJungGanBo.sheet[0]);
-                                // playOneYulmyeongNote(YulmyeongNote(Yulmyeong.joong, ScaleStatus.origin),
-                                // 3000);
                             }, child : Text('stop'),)
                         ],
                     )),
@@ -225,13 +217,4 @@ class _MyAppState extends State<MyApp> {
             player.stopMidiNote(midi: i);
           }
         }
-
-        // void playJungGanBo() async {   JungGanBo testJungGanBo = new
-        // JungGanBo("도라지타령", "세마치장단",
-        // "ht|t|t#t|h|mh#J|o|YJ#t|--h|m#ht-|t|t#h-t|h-m|yj-#y|mhm|ymy#j|o|^#ht|t|t#t|--h|mh#J|o|YJ#t|--h|m#ht-|t|t#h-t|h-m|yj-#y|mhm|ymy#j|o|^#y-j|y-m|yj#y-j|y-m|yj|m|m|h#m|--h|mh#ht|t|t#t|h|mh#J|o|YJ#t|--h|m#ht-|t|t#h-t|h-m|yj-#y|mhm|ymy#j|o|^#");
-        // testJungGanBo.sheet[0].yulmyeongs[0];   for (var i = 0; i <
-        // testJungGanBo.sheet.length; i++) {     for (var j = 0; j <
-        // testJungGanBo.sheet[i].yulmyeongs.length; j++) {        To do what you can do
-        // with YulmyeonNote print(testJungGanBo.sheet[i].yulmyeongs[j].toHangeul());
-        // }   } }
     }
