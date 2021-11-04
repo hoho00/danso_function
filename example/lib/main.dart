@@ -39,6 +39,8 @@ class _MyAppState extends State<MyApp> {
     );
     @override void initState() {
         super.initState();
+        String soundFontPath = "assests/Dan.sf2";
+        load(soundFontPath, _flutterMidi);
         detector = new Pitchdetector(sampleRate : 44100, sampleSize : 4096);
         isRecording = isRecording;
         detector
@@ -147,7 +149,7 @@ class _MyAppState extends State<MyApp> {
                                 );
                             }, child : Text('joong'),),
                             ElevatedButton(onPressed : () {
-                                playJungGanBo(testJungGanBo, _flutterMidi);
+                                playJungGanBo(testJungGanBo);
                             }, child : Text('play'),),
                             ElevatedButton(onPressed : () {
                                 endMidi();
@@ -190,5 +192,11 @@ class _MyAppState extends State<MyApp> {
                 isAdjust = false;
             });
             pitchModelInterface.settingAdjust(userInputForAdjust);
+        }
+        load(String asset, FlutterMidi flutterMidi)async {
+            print('Loading File...');
+            flutterMidi.unmute();
+            ByteData _byte = await rootBundle.load(asset);
+            flutterMidi.prepare(sf2 : _byte, name : "hi");
         }
     }

@@ -4,10 +4,10 @@ import 'package:flutter_midi/flutter_midi.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
 
-playJungGanBo(JungGanBo jungGanBo, FlutterMidi flutterMidi) {
+playJungGanBo(JungGanBo jungGanBo) {
     int i = 1;
-    String soundFontPath = "assests/Dan.sf2";
-    load(soundFontPath, flutterMidi);
+    // String soundFontPath = "assests/Dan.sf2";
+    // load(soundFontPath, flutterMidi);
     int milliSecondInOneJung = jungGanBo.jangDan.milliSecond;
     playJung(jungGanBo.sheet[0], milliSecondInOneJung);
     interval(new Duration(milliseconds : milliSecondInOneJung), (timer) {
