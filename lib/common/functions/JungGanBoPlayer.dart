@@ -8,10 +8,10 @@ void playJungGanBo(JungGanBo jungGanBo) {
     int i = 1;
     String soundFontPath = "assests/Dan.sf2";
     load(soundFontPath, FlutterMidi());
-    playJung(jungGanBo.sheet[0]);
-    interval(new Duration(milliseconds : FAST_TEMPO_SEC), (timer) {
+    playJung(jungGanBo.sheet[0], jungGanBo.jangDan.milliSecond);
+    interval(new Duration(milliseconds : jungGanBo.jangDan.milliSecond), (timer) {
         if(i < jungGanBo.sheet.length) {
-            playJung(jungGanBo.sheet[i]);
+            playJung(jungGanBo.sheet[i], jungGanBo.jangDan.milliSecond);
             i++;
         } else {
             timer.cancel();
@@ -20,7 +20,9 @@ void playJungGanBo(JungGanBo jungGanBo) {
     });
 }
 
-playJung(Jung jung) {
+playJung(Jung jung, int durationTime) {
+  int halfOfDurationTime = durationTime ~/ 2;
+  int oneOfThreeDurationTime = durationTime ~/ 3;
     if (jung.divisionStatus == DivisionStatus.one) {
         if (jung.yulmyeongs[0].yulmyeong != Yulmyeong.long && jung.yulmyeongs[0].yulmyeong != Yulmyeong.blank) {
             allMidiStop();
@@ -34,7 +36,7 @@ playJung(Jung jung) {
         playOneYulmyeongNote(jung.yulmyeongs[0]);
         int i = 1;
         interval(
-            new Duration(milliseconds : FAST_TEMPO_SEC ~/2), (timer) {
+            new Duration(milliseconds : halfOfDurationTime), (timer) {
             if(i < 2) {
                 if (jung.yulmyeongs[i].yulmyeong != Yulmyeong.long  && jung.yulmyeongs[i].yulmyeong != Yulmyeong.blank) {
                     allMidiStop();
@@ -53,7 +55,7 @@ playJung(Jung jung) {
         }
         playOneYulmyeongNote(jung.yulmyeongs[0]);
         int i = 1;
-        interval(new Duration(milliseconds : FAST_TEMPO_SEC ~/3),
+        interval(new Duration(milliseconds : oneOfThreeDurationTime),
             (timer) {
                 if(i < 3) {
                     if (jung.yulmyeongs[i].yulmyeong != Yulmyeong.long && jung.yulmyeongs[i].yulmyeong != Yulmyeong.blank) {

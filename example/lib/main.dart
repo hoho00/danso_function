@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
+
 import 'package:flutter/services.dart';
 import 'package:pitchdetector/pitchdetector.dart';
 import 'package:danso_function/danso_function.dart';
 import 'package:enum_to_string/enum_to_string.dart';
+import 'package:dart_midi/dart_midi.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:flutter_midi/flutter_midi.dart';
 
@@ -28,19 +32,20 @@ class _MyAppState extends State<MyApp> {
     double userInputForAdjust = F_FREQ;
     final _player = AudioPlayer();
     final _flutterMidi = FlutterMidi();
+    String _value = 'assets/Dan.sf2';
     Timer _timer;
 
+    var parser = MidiParser();
     JungGanBo testJungGanBo = new JungGanBo(
-        "늴리리야",
+        "도라지타령",
         "세마치장단",
         "Y|Y|Y#J|o|o#Y|M|Y#J|o|Y-J#t|t|--t#t-J|t-h|m#h-t|h-m|y#j|o|^#m|o|o#j|m|t-h#m|h-" +
                 "m|y#j|o|^#Y|Y|Y#J|o|o#Y|M|Y#J|o|Y-J#t|t|--t#t-J|t-h|m#h-t|h-m|y#j|o|^#m|o|o#j|" +
                 "m|t-h#m|h-m|y#j|o|^#"
     );
     @override void initState() {
+        load(_value);
         super.initState();
-        String soundFontPath = "assests/Dan.sf2";
-        load(soundFontPath, _flutterMidi);
         detector = new Pitchdetector(sampleRate : 44100, sampleSize : 4096);
         isRecording = isRecording;
         detector
@@ -127,13 +132,13 @@ class _MyAppState extends State<MyApp> {
                             ElevatedButton(onPressed : () {
                                 playOneYulmyeongNoteDuringDurationTime(
                                     YulmyeongNote(Yulmyeong.hwang, ScaleStatus.origin),
-                                    MEDIUM_TEMPO_SEC
+                                    FAST_TEMPO_SEC
                                 );
                             }, child : Text('hwang'),),
                             ElevatedButton(onPressed : () {
                                 playOneYulmyeongNoteDuringDurationTime(
                                     YulmyeongNote(Yulmyeong.moo, ScaleStatus.origin),
-                                    SLOW_TEMPO_SEC
+                                    MEDIUM_TEMPO_SEC
                                 );
                             }, child : Text('moo'),),
                             ElevatedButton(onPressed : () {
@@ -193,10 +198,18 @@ class _MyAppState extends State<MyApp> {
             });
             pitchModelInterface.settingAdjust(userInputForAdjust);
         }
-        load(String asset, FlutterMidi flutterMidi)async {
+
+        void stopJungGanBo() {
+            for (var i = 0; i < 256; i++) {
+                final player = FlutterMidi();
+                player.stopMidiNote(midi : i);
+            }
+        }
+
+        load(String asset)async {
             print('Loading File...');
-            flutterMidi.unmute();
+            _flutterMidi.unmute();
             ByteData _byte = await rootBundle.load(asset);
-            flutterMidi.prepare(sf2 : _byte, name : "hi");
+            _flutterMidi.prepare(sf2 : _byte, name : "hi");
         }
     }
