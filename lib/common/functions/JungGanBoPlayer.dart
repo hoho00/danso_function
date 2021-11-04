@@ -72,7 +72,7 @@ playJung(Jung jung) {
 
 }
 
-playOneYulmyeongNoteInMilliSecond(
+playOneYulmyeongNoteDuringDurationTime(
     YulmyeongNote yulmyeongNote,
     int durationTime
 ) {
