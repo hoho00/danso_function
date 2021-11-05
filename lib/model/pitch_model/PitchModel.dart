@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'package:danso_function/danso_function.dart';
 import 'package:danso_function/interface/pitch_model_interface/PitchModelInterface.dart';
 
@@ -49,6 +48,21 @@ class PitchModel implements PitchModelInterface {
 
     @override double getFrequencyByYulmyeongNote(YulmyeongNote outPutPitch) {
         return getFrequencyByYulmyeong(outPutPitch.yulmyeong, outPutPitch.scaleStatus);
+    }
+
+    @override double getModerateAverageFrequencyByListOfPitches(
+        List<double> pitches
+    ) {
+        double sum = 0.0;
+        double numberOfHits = 0.0;
+        for (var pitch in pitches) {
+            //out of range
+            if (pitch < 800.0 && pitch > 600.0) {
+                sum += pitch;
+                numberOfHits += 1.0;
+            }
+        }
+        return sum / numberOfHits;
     }
 
     double getFrequencyByYulmyeong(Yulmyeong yulmyeong, ScaleStatus scaleStatus) {

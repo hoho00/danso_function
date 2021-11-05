@@ -10,6 +10,11 @@ class JungGanBoPlayer {
     loadSF2("assets/Dan.sf2", _flutterMidi);
   }
   play(JungGanBo jungGanBo) {
+    for (var i = 0; i < jungGanBo.sheet.length; i++) {
+      for (var j = 0; j < jungGanBo.sheet[i].yulmyeongs.length; j++) {
+        print(i.toString() + " " + j.toString() + " " + jungGanBo.sheet[i].yulmyeongs[j].toHangeul());
+      }
+    }
     playJungGanBo(jungGanBo);
   }
 

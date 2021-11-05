@@ -24,11 +24,6 @@ void main() {
                     "mh#J|o|YJ#t|--h|m#ht-|t|t#h-t|h-m|yj-#y|mhm|ymy#j|o|^#y-j|y-m|yj#y-j|y-m|yj|m|" +
                     "m|h#m|--h|mh#ht|t|t#t|h|mh#J|o|YJ#t|--h|m#ht-|t|t#h-t|h-m|yj-#y|mhm|ymy#j|o|^#"
         );
-        // testJungGanBo.setJungGanBoSheetFromFormatString("ht/t/t|t/h/mh|J/o/YJ|t/--h
-        // /m|ht-/t/t|h-t/h-m/yj-|y/mhm/ymy|j/o/^|ht/t/t|t/--h/mh|J/o/YJ|t/--h/m|ht-/t
-        // /t|h-t/h-m/yj-|y/mhm/ymy|j/o/^|y-j/y-m/yj|y-j/y-m/yj/m/m/h|m/--h/mh|ht/t/t|
-        // t/h/mh|J/o/YJ|t/--h/m|ht-/t/t|h-t/h-m/yj-|y/mhm/ymy|j/o/^|"); print(t);
-        // print(testJungGanBo);
 
         expect(testJungGanBo.title, "도라지타령");
         expect(testJungGanBo.jangDan, JangDan(JangDanType.semachi));
