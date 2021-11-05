@@ -176,4 +176,10 @@ void main() {
         YulmyeongNote(Yulmyeong.joong, ScaleStatus.origin).toHangeul(),
         "중");
   });
+
+  test('getModerateAverageFrequencyByListOfPitches Test' , () {
+    List<double> testList = [700.0, 650.0, 1.3, 1680.1, 750.0];
+    PitchModelInterface testModel = new PitchModel();
+    expect(testModel.getModerateAverageFrequencyByListOfPitches(testList), 700.0);
+  });
 }

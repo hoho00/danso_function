@@ -24,4 +24,7 @@ class PitchModelInterface {
 
   //function #5
   double getFrequencyByYulmyeongNote(YulmyeongNote outPutPitch) {}
+
+  //function #6
+  double getModerateAverageFrequencyByListOfPitches(List<double> pitches) {}
 }
