@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:danso_function/common/constants/MidiNoteConst.dart';
 import 'package:danso_function/danso_function.dart';
 import 'package:flutter_midi/flutter_midi.dart';
@@ -5,17 +7,13 @@ import 'package:flutter/services.dart';
 import 'dart:async';
 
 void playJungGanBo(JungGanBo jungGanBo) {
-    int i = 1;
-    playJung(jungGanBo.sheet[0], jungGanBo.jangDan.milliSecond);
-    interval(new Duration(milliseconds : jungGanBo.jangDan.milliSecond), (timer) {
-        if(i < jungGanBo.sheet.length) {
-            playJung(jungGanBo.sheet[i], jungGanBo.jangDan.milliSecond);
-            i++;
-        } else {
-            timer.cancel();
-            return;
-        }
-    });
+    //playJung(jungGanBo.sheet[0], jungGanBo.jangDan.milliSecond);
+    for (var i = 0; i < jungGanBo.sheet.length; i++) {
+      playJung(jungGanBo.sheet[i], jungGanBo.jangDan.milliSecond);
+      sleep(new Duration(milliseconds: jungGanBo.jangDan.milliSecond));
+      // if(jungGanBo.sheet[i].yulmyeongs[0].yulmyeong != Yulmyeong.long && jungGanBo.sheet[i].yulmyeongs[0].yulmyeong != Yulmyeong.blank) allMidiStop();
+    }
+    allMidiStop();
 }
 
 playJung(Jung jung, int durationTime) {
@@ -26,48 +24,35 @@ playJung(Jung jung, int durationTime) {
             allMidiStop();
         }
         playOneYulmyeongNote(jung.yulmyeongs[0]);
-        return jung.yulmyeongs[0];
+        return ;
     } else if (jung.divisionStatus == DivisionStatus.two) {
         if (jung.yulmyeongs[0].yulmyeong != Yulmyeong.long && jung.yulmyeongs[0].yulmyeong != Yulmyeong.blank) {
             allMidiStop();
         }
         playOneYulmyeongNote(jung.yulmyeongs[0]);
-        int i = 1;
-        interval(
-            new Duration(milliseconds : halfOfDurationTime), (timer) {
-            if(i < 2) {
-                if (jung.yulmyeongs[i].yulmyeong != Yulmyeong.long  && jung.yulmyeongs[i].yulmyeong != Yulmyeong.blank) {
-                    allMidiStop();
-                }
-                playOneYulmyeongNote(jung.yulmyeongs[i]);
-                i++;
-            } else {
-                timer.cancel();
-                return jung.yulmyeongs[1];
-            }
-        });
-        return jung.yulmyeongs[1];
+        sleep(new Duration(milliseconds: halfOfDurationTime));
+
+        if (jung.yulmyeongs[1].yulmyeong != Yulmyeong.long  && jung.yulmyeongs[1].yulmyeong != Yulmyeong.blank) {
+            allMidiStop();
+        }
+        playOneYulmyeongNote(jung.yulmyeongs[1]);
+        return ;
     } else if (jung.divisionStatus == DivisionStatus.three) {
         if (jung.yulmyeongs[0].yulmyeong != Yulmyeong.long  && jung.yulmyeongs[0].yulmyeong != Yulmyeong.blank) {
             allMidiStop();
         }
         playOneYulmyeongNote(jung.yulmyeongs[0]);
-        int i = 1;
-        interval(new Duration(milliseconds : oneOfThreeDurationTime),
-            (timer) {
-                if(i < 3) {
-                    if (jung.yulmyeongs[i].yulmyeong != Yulmyeong.long && jung.yulmyeongs[i].yulmyeong != Yulmyeong.blank) {
-                        allMidiStop();
-                    }
-                    playOneYulmyeongNote(jung.yulmyeongs[i]);
-                    i++;
-                } else {
-                    timer.cancel();
-                    return jung.yulmyeongs[2];
-                }
-            }
-        );
-        return jung.yulmyeongs[2];
+        sleep(new Duration(milliseconds: oneOfThreeDurationTime));
+        if (jung.yulmyeongs[1].yulmyeong != Yulmyeong.long  && jung.yulmyeongs[1].yulmyeong != Yulmyeong.blank) {
+            allMidiStop();
+        }
+        playOneYulmyeongNote(jung.yulmyeongs[1]);
+        sleep(new Duration(milliseconds: oneOfThreeDurationTime));
+        if (jung.yulmyeongs[2].yulmyeong != Yulmyeong.long  && jung.yulmyeongs[2].yulmyeong != Yulmyeong.blank) {
+            allMidiStop();
+        }
+        playOneYulmyeongNote(jung.yulmyeongs[2]);
+        return ;
     }
 
 }
@@ -147,18 +132,10 @@ int getMidiNoteFromYulmyeongNote(YulmyeongNote yulmyeongNote) {
     return res;
 }
 
-Timer interval(Duration duration, func) {
-    Timer function () {
-        Timer timer = new Timer(duration, function);
-        func(timer);
-        return timer;
-    }
-    return new Timer(duration, function);
-}
 
 allMidiStop() {
     final stopPlayer = FlutterMidi();
-    for (var i = 50; i < 128; i++) {
+    for (var i = 0; i < 128; i++) {
         stopPlayer.stopMidiNote(midi : i);
     }
 }
@@ -170,9 +147,8 @@ endMidi() {
     }
 }
 
-load(String asset, FlutterMidi flutterMidi) async {
+loadSF2(String asset, FlutterMidi flutterMidi) async {
     print( 'Loading File...');
-    flutterMidi.unmute();
     ByteData _byte = await rootBundle.load(asset);
     flutterMidi.prepare(sf2 : _byte, name :  "hi");
 }

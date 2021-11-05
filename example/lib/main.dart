@@ -1,9 +1,7 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:flutter/services.dart';
 import 'package:pitchdetector/pitchdetector.dart';
 import 'package:danso_function/danso_function.dart';
 import 'package:enum_to_string/enum_to_string.dart';
@@ -34,15 +32,17 @@ class _MyAppState extends State<MyApp> {
     final _flutterMidi = FlutterMidi();
     String _value = 'assets/Dan.sf2';
     Timer _timer;
+    JungGanBoPlayer jungGanBoPlayer;
 
     var parser = MidiParser();
     JungGanBo testJungGanBo = new JungGanBo(
-        "도라지타령",
+        "늴리리야",
         "굿거리장단",
-        "t|t|--h#m|h|t#h-m|y-j|y#j|o|^#t|t|--h#m|h|t#h-m|y-j|y#j|o|^#m|m|o#m|--h|t#J|Y-J|t-h#m|h-m|y-j#m|m|o#m|--h|t#h-m|y-j|y#j|o|^#J|J|o#J|J|o#J|Y-J|t-h#J|J|o#Y|Y|o#Y|J|Y-J#t|t|--h#m|h-m|y-j#m|m|m#m|h|t#h-m|y-j|y#j|o|^#"
+        "YY-|JYJ|t#YY-|JYJ|t#YY-|JYJ|tht#J|--o|Y-J#tt-|h-m|ym#tt-|h-J|t-h#m|mhm|y-j#y|--m|y#y-j|y-m|y#y-j|y-m|y#YY-|JYJ|tht#J|--o|Y-J#tt-|h-m|ym-#tt-|h-J|t-h#m|mhm|y-j#y|--m|y#"
     );
     @override void initState() {
-        load(_value);
+        //load(_value);
+        jungGanBoPlayer = new JungGanBoPlayer();
         super.initState();
         detector = new Pitchdetector(sampleRate : 44100, sampleSize : 4096);
         isRecording = isRecording;
@@ -122,40 +122,52 @@ class _MyAppState extends State<MyApp> {
                             }, child : Text('Horse'),),
                             SizedBox(width : 10),
                             ElevatedButton(onPressed : () {
-                                playOneYulmyeongNoteDuringDurationTime(
+                                jungGanBoPlayer.playOneNoteDurationTime(
                                     YulmyeongNote(Yulmyeong.tae, ScaleStatus.origin),
-                                    FAST_TEMPO_SEC
+                                    2000
                                 );
+                                // playOneYulmyeongNoteDuringDurationTime(     YulmyeongNote(Yulmyeong.tae,
+                                // ScaleStatus.origin),     FAST_TEMPO_SEC );
                             }, child : Text('tae'),),
                             ElevatedButton(onPressed : () {
-                                playOneYulmyeongNoteDuringDurationTime(
+                                jungGanBoPlayer.playOneNoteDurationTime(
                                     YulmyeongNote(Yulmyeong.hwang, ScaleStatus.origin),
-                                    FAST_TEMPO_SEC
+                                    2000
                                 );
+                                // playOneYulmyeongNoteDuringDurationTime(     YulmyeongNote(Yulmyeong.hwang,
+                                // ScaleStatus.origin),     FAST_TEMPO_SEC );
                             }, child : Text('hwang'),),
                             ElevatedButton(onPressed : () {
-                                playOneYulmyeongNoteDuringDurationTime(
+                                jungGanBoPlayer.playOneNoteDurationTime(
                                     YulmyeongNote(Yulmyeong.moo, ScaleStatus.origin),
-                                    MEDIUM_TEMPO_SEC
+                                    2000
                                 );
+                                // playOneYulmyeongNoteDuringDurationTime(     YulmyeongNote(Yulmyeong.moo,
+                                // ScaleStatus.origin),     MEDIUM_TEMPO_SEC );
                             }, child : Text('moo'),),
                             ElevatedButton(onPressed : () {
-                                playOneYulmyeongNoteDuringDurationTime(
+                                jungGanBoPlayer.playOneNoteDurationTime(
                                     YulmyeongNote(Yulmyeong.yim, ScaleStatus.origin),
-                                    SLOW_TEMPO_SEC
+                                    2000
                                 );
+                                // playOneYulmyeongNoteDuringDurationTime(     YulmyeongNote(Yulmyeong.yim,
+                                // ScaleStatus.origin),     SLOW_TEMPO_SEC );
                             }, child : Text('yim'),),
                             ElevatedButton(onPressed : () {
-                                playOneYulmyeongNoteDuringDurationTime(
-                                    YulmyeongNote(Yulmyeong.joong, ScaleStatus.origin),
-                                    SLOW_TEMPO_SEC
+                                jungGanBoPlayer.playOneNoteDurationTime(
+                                    YulmyeongNote(Yulmyeong.joong, ScaleStatus.high),
+                                    2000
                                 );
-                            }, child : Text('joong'),),
+                                // playOneYulmyeongNoteDuringDurationTime(     YulmyeongNote(Yulmyeong.joong,
+                                // ScaleStatus.origin),     SLOW_TEMPO_SEC );
+                            }, child : Text('joong high'),),
                             ElevatedButton(onPressed : () {
-                                playJungGanBo(testJungGanBo);
+                                jungGanBoPlayer.play(testJungGanBo);
                             }, child : Text('play'),),
                             ElevatedButton(onPressed : () {
-                                endMidi();
+                                //todo
+                                //endMidi();
+                                jungGanBoPlayer.endMidi();
                             }, child : Text('stop'),)
                         ],
                     )),
@@ -196,18 +208,5 @@ class _MyAppState extends State<MyApp> {
             });
             pitchModelInterface.settingAdjust(userInputForAdjust);
         }
-
-        void stopJungGanBo() {
-            for (var i = 0; i < 256; i++) {
-                final player = FlutterMidi();
-                player.stopMidiNote(midi : i);
-            }
-        }
-
-        load(String asset)async {
-            print('Loading File...');
-            _flutterMidi.unmute();
-            ByteData _byte = await rootBundle.load(asset);
-            _flutterMidi.prepare(sf2 : _byte, name : "hi");
-        }
+        
     }
