@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'dart:async';
 
 void playJungGanBo(JungGanBo jungGanBo) {
+<<<<<<< HEAD
     //playJung(jungGanBo.sheet[0], jungGanBo.jangDan.milliSecond);
     for (var i = 0; i < jungGanBo.sheet.length; i++) {
       playJung(jungGanBo.sheet[i], jungGanBo.jangDan.milliSecond);
@@ -14,6 +15,21 @@ void playJungGanBo(JungGanBo jungGanBo) {
       // if(jungGanBo.sheet[i].yulmyeongs[0].yulmyeong != Yulmyeong.long && jungGanBo.sheet[i].yulmyeongs[0].yulmyeong != Yulmyeong.blank) allMidiStop();
     }
     allMidiStop();
+=======
+    int i = 1;
+    String soundFontPath = "assests/Dan.sf2";
+    load(soundFontPath, FlutterMidi());
+    playJung(jungGanBo.sheet[0], jungGanBo.jangDan.milliSecond);
+    interval(new Duration(milliseconds : jungGanBo.jangDan.milliSecond), (timer) {
+        if(i < jungGanBo.sheet.length) {
+            playJung(jungGanBo.sheet[i], jungGanBo.jangDan.milliSecond);
+            i++;
+        } else {
+            timer.cancel();
+            return;
+        }
+    });
+>>>>>>> parent of 8986b6d (fix: Adjusted in example app)
 }
 
 playJung(Jung jung, int durationTime) {
