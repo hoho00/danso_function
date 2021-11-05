@@ -36,9 +36,11 @@ class _MyAppState extends State<MyApp> {
 
     var parser = MidiParser();
     JungGanBo testJungGanBo = new JungGanBo(
-        "늴리리야",
-        "굿거리장단",
-        "YY-|JYJ|t#YY-|JYJ|t#YY-|JYJ|tht#J|--o|Y-J#tt-|h-m|ym#tt-|h-J|t-h#m|mhm|y-j#y|--m|y#y-j|y-m|y#y-j|y-m|y#YY-|JYJ|tht#J|--o|Y-J#tt-|h-m|ym-#tt-|h-J|t-h#m|mhm|y-j#y|--m|y#"
+        "도라지타령",
+        "세마치장단",
+        "Y|Y|Y#J|o|o#Y|M|Y#J|o|Y-J#t|t|--t#t-J|t-h|m#h-t|h-m|y#j|o|^#m|o|o#j|m|t-h#m|h-" +
+                "m|y#j|o|^#Y|Y|Y#J|o|o#Y|M|Y#J|o|Y-J#t|t|--t#t-J|t-h|m#h-t|h-m|y#j|o|^#m|o|o#j|" +
+                "m|t-h#m|h-m|y#j|o|^#"
     );
     @override void initState() {
         //load(_value);
