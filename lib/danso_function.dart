@@ -5,6 +5,7 @@ export './common/constants/PitchConst.dart';
 export './common/constants/TempoConst.dart';
 export './common/classes/YulmyeongNote.dart';
 export './common/classes/JangDan.dart';
+export './common/classes/JungGanBoPlayer.dart';
 
 
 export './interface/pitch_model_interface/PitchModelInterface.dart';
