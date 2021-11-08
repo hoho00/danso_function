@@ -159,7 +159,7 @@ endMidi() {
 
 loadSF2(String asset, FlutterMidi flutterMidi) async {
     print( 'Loading File...');
-    flutterMidi.unmute();
+    //flutterMidi.unmute();
     ByteData _byte = await rootBundle.load(asset);
     flutterMidi.prepare(sf2 : _byte, name :  "Dan.sf2");
 }
