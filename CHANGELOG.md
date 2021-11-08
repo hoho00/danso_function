@@ -1,3 +1,7 @@
+## 1.0.1
+
+- Hot fix!! deleted flutterMidi.unmute()
+
 ## 1.0.0
 
 - Finally Made all the functions danso application needed 🔥🔥

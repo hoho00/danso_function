@@ -6,6 +6,10 @@ Even though there are several works to do.
 ## Release Note
 
 ```
+## 1.0.1
+
+- Hot fix!! deleted flutterMidi.unmute()
+
 ## 1.0.0
 
 - Finally Made all the functions danso application needed 🔥🔥
@@ -39,6 +43,7 @@ Even though there are several works to do.
 
 - Initial release
 - Sorry for users, this might be a package for private application. So you might not as well use this package. Thanks!
+
 
 ```
 
