@@ -43,6 +43,10 @@ class JangDan {
       case JangDanType.huiMori:
         tempo = FAST_TEMPO;
         break;
+      
+      case JangDanType.fourByFour:
+        tempo = MEDIUM_TEMPO;
+        break;
       default:
     }
     return tempo;
@@ -69,6 +73,9 @@ class JangDan {
 
       case JangDanType.huiMori:
         ms = FAST_TEMPO_SEC;
+        break;
+      case JangDanType.fourByFour:
+        ms = MEDIUM_TEMPO_SEC;
         break;
       default:
     }
