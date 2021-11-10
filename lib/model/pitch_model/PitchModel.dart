@@ -2,7 +2,7 @@ import 'package:danso_function/danso_function.dart';
 import 'package:danso_function/interface/pitch_model_interface/PitchModelInterface.dart';
 
 class PitchModel implements PitchModelInterface {
-    Map<Yulmyeong, double> _yulmyeongFrequency;
+    Map<Yulmyeong, double> _yulmyeongFrequency = {Yulmyeong.start: 0.0};
     double _standardFrequency = STANDARD_PITCH;
     double _userAdjustedPitchFrequency = 0;
     double _correctRange = STANDARD_CORRECT_RANGE;
@@ -19,8 +19,8 @@ class PitchModel implements PitchModelInterface {
     }
 
     @override YulmyeongNote getYulmyeongByFrequency(double userFrequency) {
-        Yulmyeong resultYulmyeong;
-        ScaleStatus resultScaleStatus;
+        late Yulmyeong resultYulmyeong;
+        late ScaleStatus resultScaleStatus;
         _yulmyeongFrequency.forEach((yulmyeong, frequency) {
             List originRange = getFrequencyRangeByYulmyeong(yulmyeong, ScaleStatus.origin);
             List highRange = getFrequencyRangeByYulmyeong(yulmyeong, ScaleStatus.high);
@@ -66,19 +66,19 @@ class PitchModel implements PitchModelInterface {
     }
 
     double getFrequencyByYulmyeong(Yulmyeong yulmyeong, ScaleStatus scaleStatus) {
-        double resultYulmyeong = 0.0;
+        double? resultYulmyeong = 0.0;
         switch (scaleStatus) {
             case ScaleStatus.origin:
                 resultYulmyeong = _yulmyeongFrequency[yulmyeong];
                 break;
             case ScaleStatus.high:
-                resultYulmyeong = _yulmyeongFrequency[yulmyeong] * SCALEUP_CONSTANT;
+                resultYulmyeong = (_yulmyeongFrequency[yulmyeong] ?? 0.0) * SCALEUP_CONSTANT;
                 break;
             default:
                 resultYulmyeong = -1.0;
                 break;
         }
-        return resultYulmyeong;
+        return resultYulmyeong!;
     }
 
     //List[0] = low, List[1] = high

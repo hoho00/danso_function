@@ -1,206 +1,193 @@
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-
-import 'package:pitchdetector/pitchdetector.dart';
-import 'package:danso_function/danso_function.dart';
-import 'package:enum_to_string/enum_to_string.dart';
-import 'package:dart_midi/dart_midi.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_audio_capture/flutter_audio_capture.dart';
+import 'package:pitch_detector_dart/pitch_detector.dart';
+import 'package:pitchupdart/instrument_type.dart';
+import 'package:pitchupdart/pitch_handler.dart';
+import 'package:flutter_midi/flutter_midi.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:audio_session/audio_session.dart';
 
 void main() {
-    runApp(MyApp());
+  runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
-    @override _MyAppState createState() => _MyAppState();
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    );
+  }
 }
 
-class _MyAppState extends State<MyApp> {
-    PitchModelInterface pitchModelInterface = new PitchModel();
-    Pitchdetector detector;
-    Pitchdetector detectorAdjust;
-    bool isRecording = false;
-    bool isAdjust = false;
-    bool isSecondAdjust = false;
-    double pitch;
-    String yulmyeong;
-    String pitchStatus;
-    double userInputForAdjust = F_FREQ;
-    final _player = AudioPlayer();
-    JungGanBoPlayer jungGanBoPlayer;
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
 
-    var parser = MidiParser();
-    JungGanBo testJungGanBo ;
-    @override void initState() {
-        testJungGanBo = new JungGanBo(
-        "도라지타령",
-        "세마치장단",
-        "Y|Y|Y#J|o|o#Y|M|Y#J|o|Y-J#t|t|--t#t-J|t-h|m#h-t|h-m|y#j|o|^#m|o|o#j|m|t-h#m|h-m|y#j|o|^#Y|Y|Y#J|o|o#Y|M|Y#J|o|Y-J#t|t|--t#t-J|t-h|m#h-t|h-m|y#j|o|^#m|o|o#j|m|t-h#m|h-m|y#j|o|^#"
-      );
-        jungGanBoPlayer = new JungGanBoPlayer();
-        super.initState();
-        detector = new Pitchdetector(sampleRate : 44100, sampleSize : 4096);
-        isRecording = isRecording;
-        detector
-            .onRecorderStateChanged
-            .listen((event) {
-                setState(() {
-                    pitch = event["pitch"];
-                    yulmyeong = EnumToString.convertToString(
-                        pitchModelInterface.getYulmyeongByFrequency(pitch).yulmyeong
-                    );
-                    pitchStatus = EnumToString.convertToString(
-                        pitchModelInterface.getYulmyeongByFrequency(pitch).scaleStatus
-                    );
-                });
-            });
-        detectorAdjust = new Pitchdetector(sampleRate : 44100, sampleSize : 4096);
-        detectorAdjust
-            .onRecorderStateChanged
-            .listen((event) {
-                setState(() {
-                    userInputForAdjust = event["pitch"];
-                });
-            });
+  final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  final _flutterMidi = FlutterMidi();
+  final _audioRecorder = FlutterAudioCapture();
+  final pitchDetectorDart = PitchDetector(44100, 2000);
+  final pitchupDart = PitchHandler(InstrumentType.guitar);
+  var result1;
+  var note = "";
+  var status = "Click on start";
+  String _value = 'assets/Dan.sf2';
+  final _player = AudioPlayer(handleInterruptions: false);
+
+  Future<void> iosAudioSession() async {
+    final session = await AudioSession.instance;
+    await session.configure(const AudioSessionConfiguration(
+      avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
+      avAudioSessionCategoryOptions:
+          AVAudioSessionCategoryOptions.mixWithOthers,
+    ));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    load(_value);
+    iosAudioSession();
+  }
+
+  void load(String asset) async {
+    print('Loading File...');
+    _flutterMidi.unmute();
+    ByteData _byte = await rootBundle.load(asset);
+    //assets/sf2/SmallTimGM6mb.sf2
+    //assets/sf2/Piano.SF2
+    _flutterMidi.prepare(sf2: _byte, name: _value.replaceAll('assets/', ''));
+  }
+
+  Future<void> _startCapture() async {
+    await _audioRecorder.start(listener, onError,
+        sampleRate: 44100, bufferSize: 3000);
+
+    setState(() {
+      note = "";
+      status = "Play something";
+    });
+  }
+
+  Future<void> _stopCapture() async {
+    await _audioRecorder.stop();
+
+    setState(() {
+      note = "";
+      status = "Click on start";
+    });
+  }
+
+  void listener(dynamic obj) {
+    //Gets the audio sample
+    var buffer = Float64List.fromList(obj.cast<double>());
+    final List<double> audioSample = buffer.toList();
+
+    //Uses pitch_detector_dart library to detect a pitch from the audio sample
+    final result = pitchDetectorDart.getPitch(audioSample);
+
+    //If there is a pitch - evaluate it
+    if (result.pitched) {
+      //Uses the pitchupDart library to check a given pitch for a Guitar
+      final handledPitchResult = pitchupDart.handlePitch(result.pitch);
+
+      //Updates the state with the result
+      setState(() {
+        result1 = result.pitch;
+        note = handledPitchResult.note;
+        status = handledPitchResult.tuningStatus.toString();
+      });
     }
+  }
 
-    @override void dispose() {
-        _player.dispose();
-        super.dispose();
-    }
+  void onError(Object e) {
+    print(e);
+  }
 
-    @override Widget build(BuildContext context) {
-        return MaterialApp(
-                home : Scaffold(
-                    appBar : AppBar(title : const Text('Plugin example app'),),
-                    body : Center(child : Column(
-                        children : <Widget> [
-                            isRecording
-                                ? Text("Recording...")
-                                : Container(),
-                            isRecording
-                                ? Text(
-                                    "Recorded hz from mic is : $pitch and yulmyeong is : $yulmyeong and pitchStatus" +
-                                    " : $pitchStatus"
-                                )
-                                : Text("Not Recording."),
-                            TextButton(
-                                onPressed : isRecording
-                                    ? stopRecording
-                                    : startRecording,
-                                child : isRecording
-                                    ? Text("Press Me to stop")
-                                    : Text("Press Me to run")
-                            ),
-                            isAdjust
-                                ? Text("Adjusting... Please play tae")
-                                : Text("Current Standard $userInputForAdjust"),
-                            isAdjust
-                                ? Text("Recorded hz from mic is : $userInputForAdjust")
-                                : Text("Not Adjusting"),
-                            TextButton(
-                                onPressed : isAdjust
-                                    ? stopAdjust
-                                    : startAdjust,
-                                child : isAdjust
-                                    ? Text("Prees me to stop adjusting")
-                                    : Text("Press me to adjust")
-                            ),
-                            ElevatedButton(onPressed : ()async {
-                                await _player.setAsset('assets/arirang128k.ogg');
-                                _player.setSpeed(0.8);
-                                _player.play();
-                            }, child : Text('Cow'),),
-                            SizedBox(width : 10),
-                            ElevatedButton(onPressed : () {
-                                _player.stop();
-                            }, child : Text('Horse'),),
-                            SizedBox(width : 10),
-                            ElevatedButton(onPressed : () {
-                                jungGanBoPlayer.playOneNoteDurationTime(
-                                    YulmyeongNote(Yulmyeong.tae, ScaleStatus.origin),
-                                    2000
-                                );
-                                // playOneYulmyeongNoteDuringDurationTime(     YulmyeongNote(Yulmyeong.tae,
-                                // ScaleStatus.origin),     FAST_TEMPO_SEC );
-                            }, child : Text('tae'),),
-                            ElevatedButton(onPressed : () {
-                                jungGanBoPlayer.playOneNoteDurationTime(
-                                    YulmyeongNote(Yulmyeong.hwang, ScaleStatus.origin),
-                                    2000
-                                );
-                                // playOneYulmyeongNoteDuringDurationTime(     YulmyeongNote(Yulmyeong.hwang,
-                                // ScaleStatus.origin),     FAST_TEMPO_SEC );
-                            }, child : Text('hwang'),),
-                            ElevatedButton(onPressed : () {
-                                jungGanBoPlayer.playOneNoteDurationTime(
-                                    YulmyeongNote(Yulmyeong.moo, ScaleStatus.origin),
-                                    2000
-                                );
-                                // playOneYulmyeongNoteDuringDurationTime(     YulmyeongNote(Yulmyeong.moo,
-                                // ScaleStatus.origin),     MEDIUM_TEMPO_SEC );
-                            }, child : Text('moo'),),
-                            ElevatedButton(onPressed : () {
-                                jungGanBoPlayer.playOneNoteDurationTime(
-                                    YulmyeongNote(Yulmyeong.yim, ScaleStatus.origin),
-                                    2000
-                                );
-                                // playOneYulmyeongNoteDuringDurationTime(     YulmyeongNote(Yulmyeong.yim,
-                                // ScaleStatus.origin),     SLOW_TEMPO_SEC );
-                            }, child : Text('yim'),),
-                            ElevatedButton(onPressed : () {
-                                jungGanBoPlayer.playOneNoteDurationTime(
-                                    YulmyeongNote(Yulmyeong.joong, ScaleStatus.high),
-                                    2000
-                                );
-                                // playOneYulmyeongNoteDuringDurationTime(     YulmyeongNote(Yulmyeong.joong,
-                                // ScaleStatus.origin),     SLOW_TEMPO_SEC );
-                            }, child : Text('joong high'),),
-                            ElevatedButton(onPressed : () {
-                                jungGanBoPlayer.play(testJungGanBo);
-                            }, child : Text('play'),),
-                            ElevatedButton(onPressed : () {
-                                //todo
-                                //endMidi();
-                                jungGanBoPlayer.endMidi();
-                            }, child : Text('stop'),)
-                        ],
-                    )),
-                ),
-            );
-        }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: Column(children: [
+          Center(
+              child: Text(
+            note,
+            style: const TextStyle(
+                color: Colors.black87,
+                fontSize: 25.0,
+                fontWeight: FontWeight.bold),
+          )),
+          Center(
+              child: Text(
+            '$result1',
+            style: const TextStyle(
+                color: Colors.black87,
+                fontSize: 25.0,
+                fontWeight: FontWeight.bold),
+          )),
+          const Spacer(),
+          Center(
+            child: ElevatedButton(
+              child: Text('Play C'),
+              onPressed: () {
+                _flutterMidi.playMidiNote(midi: 60);
+              },
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              // await iosAudioSession();
+              _player.setAsset('assets/semachi.wav');
+              _flutterMidi.playMidiNote(midi: 60);
 
-        void startRecording()async {
-            await detector.startRecording();
-            if (detector.isRecording) {
-                setState(() {
-                    isRecording = true;
-                });
-            }
-        }
-
-        void stopRecording()async {
-            detector.stopRecording();
-            setState(() {
-                isRecording = false;
-                pitch = detector.pitch;
-            });
-        }
-
-        void startAdjust()async {
-            await detectorAdjust.startRecording();
-            if (detectorAdjust.isRecording) {
-                setState(() {
-                    isAdjust = true;
-                });
-            }
-        }
-
-        void stopAdjust() {
-            detector.stopRecording();
-            setState(() {
-                isAdjust = false;
-            });
-            pitchModelInterface.settingAdjust(userInputForAdjust);
-        } 
-    }
+              // _player.setVolume(100.0);
+              _player.setSpeed(0.8);
+              _player.play();
+            },
+            child: Text('Cow'),
+          ),
+          Center(
+              child: Text(
+            status,
+            style: const TextStyle(
+                color: Colors.black87,
+                fontSize: 14.0,
+                fontWeight: FontWeight.bold),
+          )),
+          Expanded(
+              child: Row(
+            children: [
+              Expanded(
+                  child: Center(
+                      child: FloatingActionButton(
+                          onPressed: _startCapture,
+                          child: const Text("Start")))),
+              Expanded(
+                  child: Center(
+                      child: FloatingActionButton(
+                          onPressed: _stopCapture, child: const Text("Stop")))),
+            ],
+          ))
+        ]),
+      ),
+    );
+  }
+}

@@ -11,7 +11,7 @@ import 'package:danso_function/danso_function.dart';
 //this is
 class PitchModelInterface {
   //function #1
-  YulmyeongNote getYulmyeongByFrequency(double userFrequency) {}
+  YulmyeongNote? getYulmyeongByFrequency(double userFrequency) {}
   
   //function #2
   void settingAdjust(double userInputFrequency) {}
@@ -20,11 +20,11 @@ class PitchModelInterface {
   //PitchConst 에서 const value변경해서 정하기, ui에서는 기능 제공 x
 
   //function #4
-  bool isCorrectPitch(double userFrequency, YulmyeongNote detectPitch) {}
+  bool? isCorrectPitch(double userFrequency, YulmyeongNote detectPitch) {}
 
   //function #5
-  double getFrequencyByYulmyeongNote(YulmyeongNote outPutPitch) {}
+  double? getFrequencyByYulmyeongNote(YulmyeongNote outPutPitch) {}
 
   //function #6
-  double getModerateAverageFrequencyByListOfPitches(List<double> pitches) {}
+  double? getModerateAverageFrequencyByListOfPitches(List<double> pitches) {}
 }
