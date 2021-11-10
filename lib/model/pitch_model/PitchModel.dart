@@ -72,7 +72,7 @@ class PitchModel implements PitchModelInterface {
                 resultYulmyeong = _yulmyeongFrequency[yulmyeong];
                 break;
             case ScaleStatus.high:
-                resultYulmyeong = _yulmyeongFrequency[yulmyeong] ?? 0.0 * SCALEUP_CONSTANT;
+                resultYulmyeong = (_yulmyeongFrequency[yulmyeong] ?? 0.0) * SCALEUP_CONSTANT;
                 break;
             default:
                 resultYulmyeong = -1.0;
