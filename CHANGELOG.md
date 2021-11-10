@@ -1,3 +1,7 @@
+## 1.0.3
+
+- Hot fix!! deleted assets for ios
+
 ## 1.0.2
 
 - Hot fix!! deleted assets for ios
