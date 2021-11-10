@@ -18,8 +18,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
-  flutter: ">=1.17.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -34,10 +33,13 @@ dependencies:
   danso_function:
     path: ..
   # pitchdetector: any
-  enum_to_string: any
-  dart_midi: any
+  flutter_midi: ^1.1.0
+  pitch_detector_dart: ^0.0.2
+  # permission_handler: any
+  flutter_audio_capture: any
+  pitchupdart: any
   just_audio: any
-  flutter_midi: any
+  audio_session: any
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
