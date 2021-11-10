@@ -5,8 +5,8 @@ import 'package:danso_function/danso_function.dart';
 // 오선보의 한마디에 해당하는 것을 ‘강’ 이라 한다. 정 : 오선보의 한 박에 해당하는 것을 ‘정’ 이라 한다.
 
 class JungGanBo implements JungGanBoInterface {
-    String _title;
-    JangDan _jangDan;
+    String _title = "default";
+    late JangDan _jangDan;
     List<Jung> _sheet = [];
 
     String get title => _title;
@@ -41,7 +41,7 @@ class JungGanBo implements JungGanBoInterface {
     set title(String title) => _title = title;
 
     void setJangDanString(String jangDan) {
-        JangDanType tmp;
+        late JangDanType tmp;
         switch (jangDan) {
             case "세마치장단":
                 tmp = JangDanType.semachi;

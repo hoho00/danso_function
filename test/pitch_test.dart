@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:danso_function/interface/pitch_model_interface/PitchModelInterface.dart';
 import 'package:flutter/foundation.dart';
-import 'package:pitchdetector/pitchdetector.dart';
 import 'package:test/test.dart';
 import 'package:danso_function/danso_function.dart';
 

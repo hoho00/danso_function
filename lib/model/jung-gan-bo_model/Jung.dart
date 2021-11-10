@@ -1,7 +1,7 @@
 import 'package:danso_function/danso_function.dart';
 
 class Jung {
-  DivisionStatus _divisionStatus;
+  DivisionStatus _divisionStatus = DivisionStatus.one;
   List<YulmyeongNote> _yulmyeongs = [];
 
   DivisionStatus get divisionStatus => _divisionStatus;
@@ -77,7 +77,7 @@ class Jung {
         return new YulmyeongNote(Yulmyeong.rest, ScaleStatus.origin);
         break;
       default:
-        return null;
+        return YulmyeongNote(Yulmyeong.blank, ScaleStatus.origin);
         break;
     }
   }

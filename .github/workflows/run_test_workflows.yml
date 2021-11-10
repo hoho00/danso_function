@@ -7,14 +7,13 @@ name: Dart
 
 on:
   push:
-    branches: 
-      - '*'
-      - '*/*'
+    branches:
+      - "*"
+      - "*/*"
   pull_request:
-    branches: 
-      - '*'
-      - '*/*'
-      
+    branches:
+      - "*"
+      - "*/*"
 
 jobs:
   build:
@@ -25,7 +24,7 @@ jobs:
       - name: Install Flutter
         uses: subosito/flutter-action@v1
         with:
-          flutter-version: '1.22.2'
+          flutter-version: "2.5.1"
 
       # Note: This workflow uses the latest stable version of the Dart SDK.
       # You can specify other versions if desired, see documentation here:
@@ -35,7 +34,6 @@ jobs:
 
       - name: Install and Setup fvm
         run: dart pub global activate fvm
-
 
       - name: Install dependencies
         run: fvm flutter pub get
