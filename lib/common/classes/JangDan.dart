@@ -3,9 +3,9 @@
 import 'package:danso_function/danso_function.dart';
 
 class JangDan {
-  JangDanType _jangDanType;
-  double _tempo;
-  int _milliSecond;
+  JangDanType _jangDanType = JangDanType.semachi;
+  double _tempo = MEDIUM_TEMPO;
+  int _milliSecond = MEDIUM_TEMPO_SEC;
 
   JangDan(JangDanType jangDanType) {
     _jangDanType = jangDanType;

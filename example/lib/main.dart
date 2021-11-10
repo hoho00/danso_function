@@ -1,7 +1,5 @@
-
 import 'package:flutter/material.dart';
 
-import 'package:pitchdetector/pitchdetector.dart';
 import 'package:danso_function/danso_function.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:dart_midi/dart_midi.dart';
@@ -17,8 +15,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
     PitchModelInterface pitchModelInterface = new PitchModel();
-    Pitchdetector detector;
-    Pitchdetector detectorAdjust;
+    //Pitchdetector detector; Pitchdetector detectorAdjust;
     bool isRecording = false;
     bool isAdjust = false;
     bool isSecondAdjust = false;
@@ -30,38 +27,29 @@ class _MyAppState extends State<MyApp> {
     JungGanBoPlayer jungGanBoPlayer;
 
     var parser = MidiParser();
-    JungGanBo testJungGanBo ;
+    JungGanBo testJungGanBo;
     @override void initState() {
         testJungGanBo = new JungGanBo(
-        "도라지타령",
-        "세마치장단",
-        "Y|Y|Y#J|o|o#Y|M|Y#J|o|Y-J#t|t|--t#t-J|t-h|m#h-t|h-m|y#j|o|^#m|o|o#j|m|t-h#m|h-m|y#j|o|^#Y|Y|Y#J|o|o#Y|M|Y#J|o|Y-J#t|t|--t#t-J|t-h|m#h-t|h-m|y#j|o|^#m|o|o#j|m|t-h#m|h-m|y#j|o|^#"
-      );
+            "도라지타령",
+            "세마치장단",
+            "Y|Y|Y#J|o|o#Y|M|Y#J|o|Y-J#t|t|--t#t-J|t-h|m#h-t|h-m|y#j|o|^#m|o|o#j|m|t-h#m|h-" +
+                    "m|y#j|o|^#Y|Y|Y#J|o|o#Y|M|Y#J|o|Y-J#t|t|--t#t-J|t-h|m#h-t|h-m|y#j|o|^#m|o|o#j|" +
+                    "m|t-h#m|h-m|y#j|o|^#"
+        );
         jungGanBoPlayer = new JungGanBoPlayer();
         super.initState();
-        detector = new Pitchdetector(sampleRate : 44100, sampleSize : 4096);
+        //detector = new Pitchdetector(sampleRate : 44100, sampleSize : 4096);
         isRecording = isRecording;
-        detector
-            .onRecorderStateChanged
-            .listen((event) {
-                setState(() {
-                    pitch = event["pitch"];
-                    yulmyeong = EnumToString.convertToString(
-                        pitchModelInterface.getYulmyeongByFrequency(pitch).yulmyeong
-                    );
-                    pitchStatus = EnumToString.convertToString(
-                        pitchModelInterface.getYulmyeongByFrequency(pitch).scaleStatus
-                    );
-                });
-            });
-        detectorAdjust = new Pitchdetector(sampleRate : 44100, sampleSize : 4096);
-        detectorAdjust
-            .onRecorderStateChanged
-            .listen((event) {
-                setState(() {
-                    userInputForAdjust = event["pitch"];
-                });
-            });
+        // detector     .onRecorderStateChanged     .listen((event) {
+        // setState(() {             pitch = event["pitch"];             yulmyeong =
+        // EnumToString.convertToString(
+        // pitchModelInterface.getYulmyeongByFrequency(pitch).yulmyeong             );
+        // pitchStatus = EnumToString.convertToString(
+        // pitchModelInterface.getYulmyeongByFrequency(pitch).scaleStatus             );
+        // });     }); detectorAdjust = new Pitchdetector(sampleRate : 44100, sampleSize
+        // : 4096); detectorAdjust     .onRecorderStateChanged     .listen((event) {
+        // setState(() {             userInputForAdjust = event["pitch"];         });
+        // });
     }
 
     @override void dispose() {
@@ -160,8 +148,7 @@ class _MyAppState extends State<MyApp> {
                                 jungGanBoPlayer.play(testJungGanBo);
                             }, child : Text('play'),),
                             ElevatedButton(onPressed : () {
-                                //todo
-                                //endMidi();
+                                //todo endMidi();
                                 jungGanBoPlayer.endMidi();
                             }, child : Text('stop'),)
                         ],
@@ -171,36 +158,29 @@ class _MyAppState extends State<MyApp> {
         }
 
         void startRecording()async {
-            await detector.startRecording();
-            if (detector.isRecording) {
-                setState(() {
-                    isRecording = true;
-                });
-            }
+
+            setState(() {
+                isRecording = true;
+            });
+
         }
 
         void stopRecording()async {
-            detector.stopRecording();
             setState(() {
                 isRecording = false;
-                pitch = detector.pitch;
             });
         }
 
-        void startAdjust()async {
-            await detectorAdjust.startRecording();
-            if (detectorAdjust.isRecording) {
-                setState(() {
-                    isAdjust = true;
-                });
-            }
+        void startAdjust() {
+            setState(() {
+                isAdjust = true;
+            });
         }
 
         void stopAdjust() {
-            detector.stopRecording();
             setState(() {
                 isAdjust = false;
             });
             pitchModelInterface.settingAdjust(userInputForAdjust);
-        } 
+        }
     }

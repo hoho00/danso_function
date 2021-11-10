@@ -4,7 +4,7 @@ import '../functions/JungGanBoPlayer.dart';
 
 class JungGanBoPlayer {
   FlutterMidi _flutterMidi = FlutterMidi();
-  JungGanBo _jungGanBo;
+  late JungGanBo _jungGanBo;
 
   JungGanBoPlayer() {
     //loadSF2("assets/Dan.sf2", _flutterMidi);
