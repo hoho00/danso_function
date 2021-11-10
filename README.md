@@ -1,11 +1,23 @@
 # danso_function 🔥🔥🔥
 
-v1.0.0 Finally Released!!
-Even though there are several works to do.
+v 2.0.0 is released!!
+Applied Null Safety
 
 ## Release Note
 
 ```
+## 2.0.0
+
+- Applied Null Safety
+
+## 1.0.3
+
+- Hot fix!! deleted assets for ios
+
+## 1.0.2
+
+- Hot fix!! deleted assets for ios
+
 ## 1.0.1
 
 - Hot fix!! deleted flutterMidi.unmute()
@@ -43,7 +55,6 @@ Even though there are several works to do.
 
 - Initial release
 - Sorry for users, this might be a package for private application. So you might not as well use this package. Thanks!
-
 
 ```
 

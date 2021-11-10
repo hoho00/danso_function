@@ -1,3 +1,7 @@
+## 2.0.0
+
+- Applied Null Safety
+
 ## 1.0.3
 
 - Hot fix!! deleted assets for ios
