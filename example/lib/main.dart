@@ -1,5 +1,7 @@
 import 'dart:typed_data';
 
+import 'package:danso_function/danso_function.dart';
+import 'package:danso_function/model/jung-gan-bo_model/JungGanBo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_audio_capture/flutter_audio_capture.dart';
@@ -48,21 +50,35 @@ class _MyHomePageState extends State<MyHomePage> {
   var status = "Click on start";
   String _value = 'assets/Dan.sf2';
   final _player = AudioPlayer(handleInterruptions: false);
+  late AudioSession audioSessions;
+  JungGanBo testJungGanBo = new JungGanBo(
+            "도라지타령",
+            "자진모리장단",
+            "ht|t|t#t|h|mh#J|o|YJ#t|--h|m#ht-|t|t#h-t|h-m|yj-#y|mhm|ymy#j|o|^#ht|t|t#t|--h|" +
+                    "mh#J|o|YJ#t|--h|m#ht-|t|t#h-t|h-m|yj-#y|mhm|ymy#j|o|^#y-j|y-m|yj#y-j|y-m|yj|m|" +
+                    "m|h#m|--h|mh#ht|t|t#t|h|mh#J|o|YJ#t|--h|m#ht-|t|t#h-t|h-m|yj-#y|mhm|ymy#j|o|^#"
+        );
 
-  Future<void> iosAudioSession() async {
+  JungGanBoPlayer jungGanBoPlayer = JungGanBoPlayer();
+  iosAudioSession() async {
     final session = await AudioSession.instance;
     await session.configure(const AudioSessionConfiguration(
       avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
-      avAudioSessionCategoryOptions:
-          AVAudioSessionCategoryOptions.mixWithOthers,
-    ));
+            avAudioSessionCategoryOptions:
+                AVAudioSessionCategoryOptions.defaultToSpeaker,
+            avAudioSessionMode: AVAudioSessionMode.videoRecording,
+            avAudioSessionRouteSharingPolicy:
+                AVAudioSessionRouteSharingPolicy.defaultPolicy,
+            avAudioSessionSetActiveOptions:
+                AVAudioSessionSetActiveOptions.notifyOthersOnDeactivation,
+    )).then((_) => audioSessions = session);
   }
 
   @override
   void initState() {
     super.initState();
     load(_value);
-    iosAudioSession();
+    //iosAudioSession();
   }
 
   void load(String asset) async {
@@ -148,7 +164,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: ElevatedButton(
               child: Text('Play C'),
               onPressed: () {
-                _flutterMidi.playMidiNote(midi: 60);
+                jungGanBoPlayer.play(testJungGanBo);
               },
             ),
           ),
@@ -178,7 +194,10 @@ class _MyHomePageState extends State<MyHomePage> {
               Expanded(
                   child: Center(
                       child: FloatingActionButton(
-                          onPressed: _startCapture,
+                          onPressed: () async {
+                            _startCapture();
+                            iosAudioSession();
+                            },
                           child: const Text("Start")))),
               Expanded(
                   child: Center(
